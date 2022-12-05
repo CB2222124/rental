@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_DB=rental
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_INITDB_ARGS=--encoding=UTF8
+    volumes:
+      - ./database:/var/lib/postgresql/data
+      - ./create-tables.sql:/docker-entrypoint-initdb.d/create-tables.sql
+      - ./populate-tables.sql:/docker-entrypoint-initdb.d/populate-tables.sql
+    ports:
+      - target: 5432
+        published: 5432
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge

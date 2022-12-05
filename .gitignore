@@ -15,4 +15,7 @@
 log/
 target/
 
-#Credit attributed to: https://gist.github.com/lordofthelake/5833336.
+# Docker
+database/
+
+#Referenced: https://gist.github.com/lordofthelake/5833336.
