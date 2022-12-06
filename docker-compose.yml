@@ -9,7 +9,6 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_INITDB_ARGS=--encoding=UTF8
     volumes:
-      - ./database:/var/lib/postgresql/data
       - ./create-tables.sql:/docker-entrypoint-initdb.d/create-tables.sql
       - ./populate-tables.sql:/docker-entrypoint-initdb.d/populate-tables.sql
     ports:
