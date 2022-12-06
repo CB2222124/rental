@@ -35,6 +35,7 @@ public class Application {
         commands.put("logout", new LogoutCommand());
         commands.put("commands", new ListCommand());
         commands.put("exit", new ExitCommand());
+        commands.put("search", new ViewVehiclesAsCustomer());
     }
 
     /**
