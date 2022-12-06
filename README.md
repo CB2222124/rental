@@ -1,14 +1,25 @@
 # Car Rental Company Console Application
 
-## Student Development
+### Project Setup
 
+Clone the repository and open `pom.xml` as a project in your IDE of choice.
+
+### Postgres
+
+Pulls the postgres image from the registry, creates and launches the container.
 ```
-Clone the repository.
-Open the pom.xml file as a project in your IDE of choice.
+docker pull postgres
+docker-compose up -d
 ```
 
-## Lecturer Review
+Stops and removes the container.
+```
+docker-compose down
+```
 
-Compiled projects packaged with a runtime environment are available at:
-
-https://github.com/CB2222124/rental-team-3/releases.
+Removes the local database volume.
+```
+rm -rf database (macOS/Linux)
+rmdir database /s /q (cmd)
+Remove-Item -Path database -Force -Recurse (PowerShell)
+```
