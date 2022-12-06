@@ -17,3 +17,9 @@ insert into location (street, city, country, postcode, telephone) values ('Larry
 insert into location (street, city, country, postcode, telephone) values ('Ridgeview', 'Casal do Relvas', 'Portugal', '2440-341', '+351 623 862 7682');
 
 insert into employee (username, password, location_id) values ('admin', 'password', 1);
+
+insert into vehicle (reg_no, make, model, colour, daily_rate) values ('CU97 JUH', 'Toyota', 'Camry', 'Maroon', 157.99);
+insert into vehicle (reg_no, make, model, colour, daily_rate) values ('OG46 CWU', 'Oldsmobile', 'Intrigue', 'Maroon', 168.28);
+insert into vehicle (reg_no, make, model, colour, daily_rate) values ('XY66 TQH', 'Isuzu', 'Axiom', 'Khaki', 158.5);
+insert into vehicle (reg_no, make, model, colour, daily_rate) values ('DM99 YXG', 'Chevrolet', 'Camaro', 'Mauv', 184.09);
+insert into vehicle (reg_no, make, model, colour, daily_rate) values ('UY83 PWQ', 'Chevrolet', 'Silverado 2500', 'Red', 164.39);
