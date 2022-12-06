@@ -26,19 +26,14 @@ CREATE TABLE employee (
 
 CREATE TABLE vehicle (
     vehicle_id SERIAL PRIMARY KEY NOT NULL,
+    location_id SERIAL REFERENCES location(location_id),
+    availability BOOLEAN,
     reg_no VARCHAR(8),
     make VARCHAR(255),
     model VARCHAR(255),
     colour VARCHAR(255),
     daily_rate MONEY
     --MORE FIELDS NOT INCLUDED
-);
-
-CREATE TABLE location_vehicle (
-    location_id SERIAL REFERENCES location(location_id),
-    vehicle_id SERIAL REFERENCES vehicle(vehicle_id),
-    availability BOOLEAN,
-    PRIMARY KEY (location_id, vehicle_id)
 );
 
 CREATE TABLE booking (
