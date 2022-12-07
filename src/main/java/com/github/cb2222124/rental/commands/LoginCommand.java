@@ -48,11 +48,11 @@ public class LoginCommand implements Command {
                     System.out.println("Customer login successful.");
                 } catch (NoSuchElementException e) {
                     System.out.println("Invalid customer credentials, login aborted.");
+                    System.out.println("Attempting to access an employee account? Try 'login -employee'.");
                 }
             }
             postgres.getConnection().close();
         } catch (SQLException e) {
-            System.out.println(e.toString());
             System.out.println("Error connecting to database, login aborted.");
         }
     }
