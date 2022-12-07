@@ -33,10 +33,10 @@ public class Application {
         commands.put("register", new RegisterCommand());
         commands.put("login", new LoginCommand());
         commands.put("search", new ViewVehiclesAsCustomer());
+        commands.put("bookings", new ViewBookingsCommand());
         commands.put("logout", new LogoutCommand());
         commands.put("commands", new ListCommand());
         commands.put("exit", new ExitCommand());
-        commands.put("search", new ViewVehiclesAsCustomer());
     }
 
     /**

@@ -2,10 +2,9 @@ package com.github.cb2222124.rental.commands;
 
 import com.github.cb2222124.rental.Application;
 import com.github.cb2222124.rental.models.Command;
+import com.github.cb2222124.rental.utils.OutputFormatter;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Command used to list all currently available commands.
@@ -16,25 +15,15 @@ public class ListCommand implements Command {
 
     @Override
     public void execute(HashMap<String, String> args) {
-        LinkedHashMap<String, Command> commands = Application.commands;
-
-        //First pass is to establish how much padding the command names require.
-        int longestCommand = 0;
-        for (Map.Entry<String, Command> command : commands.entrySet()) {
-            if (command.getValue().isAvailable()) {
-                if (command.getKey().length() > longestCommand) {
-                    longestCommand = command.getKey().length();
-                }
-            }
+        List<List<String>> table = new ArrayList<>();
+        for (Map.Entry<String, Command> command : Application.commands.entrySet()) {
+            if(!command.getValue().isAvailable()) continue;
+            List<String> row = new ArrayList<>();
+            row.add(command.getKey());
+            row.add(command.getValue().getDescription());
+            table.add(row);
         }
-
-        //Now lets print out every command.
-        for (Map.Entry<String, Command> command : commands.entrySet()) {
-            if (command.getValue().isAvailable()) {
-                System.out.format("%-" + (longestCommand + 4) + "s%s\n",
-                        command.getKey(), command.getValue().getDescription());
-            }
-        }
+        new OutputFormatter().printTable(table);
     }
 
     @Override
