@@ -16,10 +16,3 @@ Stops and removes the container.
 ```
 docker-compose down
 ```
-
-Removes the local database volume.
-```
-rm -rf database (macOS/Linux)
-rmdir database /s /q (cmd)
-Remove-Item -Path database -Force -Recurse (PowerShell)
-```
