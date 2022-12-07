@@ -3,6 +3,7 @@ package com.github.cb2222124.rental.commands;
 import com.github.cb2222124.rental.Application;
 import com.github.cb2222124.rental.models.Command;
 import com.github.cb2222124.rental.models.Role;
+import com.github.cb2222124.rental.utils.OutputFormatter;
 import com.github.cb2222124.rental.utils.Postgres;
 
 import java.sql.Connection;
@@ -14,7 +15,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
- * @author Rania
+ * @author Rania, Callan
  */
 public class ViewVehiclesAsCustomer implements Command {
 
@@ -37,7 +38,7 @@ public class ViewVehiclesAsCustomer implements Command {
             showAvailableVehicles(locationID, postgres.getConnection());
             postgres.getConnection().close();
         } catch (SQLException e) {
-            System.out.println("Connection failed, search aborted.");
+            System.out.println("Error connecting to database, search aborted.");
             e.printStackTrace();
         } catch (NoSuchElementException e) {
             if (e.getMessage() == null) {
@@ -61,7 +62,9 @@ public class ViewVehiclesAsCustomer implements Command {
         statement.setString(1, cityCode);
         ResultSet result = statement.executeQuery();
         if (!result.isBeforeFirst()) throw new NoSuchElementException("No address found for given city");
-        printResults(result, "address_id", "num", "street", "city_code", "country_code", "postcode");
+        String[] resultColumns = {"address_id", "num", "street", "city_code", "country_code", "postcode"};
+        String[] outputColumns = {"Address ID", "Property Name/Number", "Street", "City Code", "Country Code", "Post Code"};
+        new OutputFormatter().printResultSet(result, resultColumns, outputColumns);
     }
 
     public int getLocationID(int addressID, Connection connection) throws SQLException, NoSuchElementException {
@@ -77,22 +80,11 @@ public class ViewVehiclesAsCustomer implements Command {
         statement.setInt(1, locationID);
         ResultSet result = statement.executeQuery();
         if (result.isBeforeFirst()) {
-            printResults(result, "vehicle_id", "reg", "make", "model", "available", "location_id", "daily_fee");
+            String[] resultColumns = {"vehicle_id", "reg", "make", "model", "available", "location_id", "daily_fee"};
+            String[] outputColumns = {"Vehicle ID", "Registration", "Make", "Model", "Available", "Location ID", "Daily Rate"};
+            new OutputFormatter().printResultSet(result, resultColumns, outputColumns);
         } else {
             System.out.println("No vehicles found.");
-        }
-    }
-
-    public static void printResults(ResultSet data, String... columnNames) throws SQLException {
-        for (String column : columnNames) {
-            System.out.printf("%s\t", column);
-        }
-        System.out.print("\n");
-        while (data.next()) {
-            for (String column : columnNames) {
-                System.out.printf("%s\t", data.getString(column));
-            }
-            System.out.print("\n");
         }
     }
 
