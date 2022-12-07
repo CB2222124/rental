@@ -1,25 +1,35 @@
 -- https://www.mockaroo.com/
-insert into customer (date_of_birth, first_name, last_name, username, password, address) values ('1967-08-23', 'Etheline', 'Tremlett', 'etremlett0', 'fOxeEmwqy3z', '2862 Maryland Street');
-insert into customer (date_of_birth, first_name, last_name, username, password, address) values ('1973-04-10', 'Spenser', 'Ungerer', 'sungerer1', 'nu9pZYJ2m', '42834 Union Hill');
-insert into customer (date_of_birth, first_name, last_name, username, password, address) values ('1969-06-08', 'Trenton', 'Siverns', 'tsiverns2', 'd7ZOOP', '20 Pine View Drive');
-insert into customer (date_of_birth, first_name, last_name, username, password, address) values ('1981-01-15', 'Emile', 'Notton', 'enotton3', 'odOCdr3xmuW5', '9123 Karstens Plaza');
-insert into customer (date_of_birth, first_name, last_name, username, password, address) values ('1968-07-02', 'Donalt', 'Crosbie', 'dcrosbie4', 'rNGMb3expKy', '08109 1st Terrace');
-insert into customer (date_of_birth, first_name, last_name, username, password, address) values ('1953-06-05', 'Talia', 'Gadault', 'tgadault5', 'Rmo5IF08P07q', '84886 Pierstorff Plaza');
-insert into customer (date_of_birth, first_name, last_name, username, password, address) values ('1989-06-25', 'Derek', 'Gutierrez', 'dgutierrez6', 'JmV4IU', '01 Fair Oaks Plaza');
-insert into customer (date_of_birth, first_name, last_name, username, password, address) values ('1997-12-11', 'Fifine', 'Pinnigar', 'fpinnigar7', 'wIJpuQE2sA', '9 Ronald Regan Court');
-insert into customer (date_of_birth, first_name, last_name, username, password, address) values ('1958-08-23', 'Dene', 'Gatland', 'dgatland8', 'YfSLv6klCU9', '3343 Glacier Hill Way');
-insert into customer (date_of_birth, first_name, last_name, username, password, address) values ('1952-09-11', 'Myrtice', 'Jakubczyk', 'mjakubczyk9', '6Oj7lUT56cy', '6238 Farmco Crossing');
+insert into city (city_code, city) values ('SW', 'Swansea');
+insert into city (city_code, city) values ('BS', 'Bristol');
+insert into city (city_code, city) values ('GL', 'Glasgow');
 
-insert into location (street, city, country, postcode, telephone) values ('Clemons', 'Chã', 'Portugal', '2435-091', '+351 967 447 2134');
-insert into location (street, city, country, postcode, telephone) values ('Farragut', 'Los Angeles', 'United States', '90005', '+1 562 609 1356');
-insert into location (street, city, country, postcode, telephone) values ('Glendale', 'Giedlarowa', 'Poland', '40-401', '+48 510 427 8332');
-insert into location (street, city, country, postcode, telephone) values ('Larry', 'Sanjiang', 'China', null, '+86 582 179 9087');
-insert into location (street, city, country, postcode, telephone) values ('Ridgeview', 'Casal do Relvas', 'Portugal', '2440-341', '+351 623 862 7682');
 
-insert into employee (username, password, location_id) values ('admin', 'password', 1);
+insert into country (country_code, country) values ('WA', 'Wales');
+insert into country (country_code, country) values ('EN', 'England');
+insert into country (country_code, country) values ('SC', 'Scotland');
 
-insert into vehicle (reg_no, make, model, colour, daily_rate) values ('CU97 JUH', 'Toyota', 'Camry', 'Maroon', 157.99);
-insert into vehicle (reg_no, make, model, colour, daily_rate) values ('OG46 CWU', 'Oldsmobile', 'Intrigue', 'Maroon', 168.28);
-insert into vehicle (reg_no, make, model, colour, daily_rate) values ('XY66 TQH', 'Isuzu', 'Axiom', 'Khaki', 158.5);
-insert into vehicle (reg_no, make, model, colour, daily_rate) values ('DM99 YXG', 'Chevrolet', 'Camaro', 'Mauv', 184.09);
-insert into vehicle (reg_no, make, model, colour, daily_rate) values ('UY83 PWQ', 'Chevrolet', 'Silverado 2500', 'Red', 164.39);
+
+insert into address (num, street, city_code, country_code, postcode) values (5, 'Morriston Way', 'SW', 'WA', 'SW6 6GG');
+insert into address (num, street, city_code, country_code, postcode) values (17, 'Harbour Walk', 'BS', 'EN', 'BS1 5NG');
+insert into address (num, street, city_code, country_code, postcode) values (14, 'Bruce Avenue', 'GL', 'SC', 'GL1 2LS');
+insert into address (num, street, city_code, country_code, postcode) values (22, 'Hall Road', 'BS', 'EN', 'BS3 1NG');
+insert into address (num, street, city_code, country_code, postcode) values (123, 'Arthur Close', 'GL', 'SC', 'GL3 6HH');
+
+
+insert into location (address_id) values (1);
+insert into location (address_id) values (2);
+insert into location (address_id) values (3);
+
+
+insert into customer (firstname, lastname, username, password, address_id) values ('Jamila', 'Jones', 'user101', 'letmein', 4);
+insert into customer (firstname, lastname, username, password, address_id) values ('Barney', 'Rubble', 'BRubble101', 'sticksnstones', 5);
+
+
+insert into vehicle (reg_no, make, model, available, location_id, daily_fee) values ('GH26 VVC', 'Honda', 'Ridgeline', true, 1, 124.11);
+insert into vehicle (reg_no, make, model, available, location_id, daily_fee) values ('RR02 CSE', 'GMC', 'Acadia', true, 1, 99.53);
+insert into vehicle (reg_no, make, model, available, location_id, daily_fee) values ('HX51 OLP', 'Ford', 'Mustang', true, 1, 130.58);
+insert into vehicle (reg_no, make, model, available, location_id, daily_fee) values ('VC88 HDV', 'Bentley', 'Continental GT', true, 2, 139.72);
+insert into vehicle (reg_no, make, model, available, location_id, daily_fee) values ('HR91 JAO', 'Chevrolet', 'Silverado', true, 3, 186.17);
+
+
+insert into booking (customer_id, pickup_loc, dropoff_loc, reg_no, datefrom, dateto) values (2, 3, 1, 'GH26 VVC', '2022-12-10', '2022-12-15');
