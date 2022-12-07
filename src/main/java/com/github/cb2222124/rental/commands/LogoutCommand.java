@@ -15,13 +15,13 @@ public class LogoutCommand implements Command {
 
     @Override
     public void execute(HashMap<String, String> args) {
-        Application.role = Role.NONE;
+        Application.user.updateUser(Role.NONE, 0);
         System.out.println("Logout successful. Thank you for using Rentals!");
     }
 
     @Override
     public boolean isAvailable() {
-        return Application.role != Role.NONE;
+        return Application.user.getRole() != Role.NONE;
     }
 
     @Override

@@ -21,7 +21,7 @@ public class RegisterCommand implements Command {
 
     @Override
     public boolean isAvailable() {
-        return Application.role == Role.NONE;
+        return Application.user.getRole() == Role.NONE;
     }
 
     @Override
