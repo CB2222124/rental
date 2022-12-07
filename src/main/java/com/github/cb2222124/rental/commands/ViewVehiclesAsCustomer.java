@@ -35,6 +35,14 @@ public class ViewVehiclesAsCustomer implements Command {
         }
     }
 
+    /**
+     * <p>
+     *     This function looks up all available vehicles in a location specified by the user
+     * @param locationID passed in to look up vehicles in this location
+     * @param connection establishes database connection
+     * @return returns all values in our table that match SQL query
+     * @throws SQLException
+     */
 
     private boolean searchVehicle(int locationID, Connection connection) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(
@@ -48,6 +56,14 @@ public class ViewVehiclesAsCustomer implements Command {
         return result.next();
     }
 
+    /**
+     * <p>
+     *     This function uses address_id selected by user to look up loaction_id in the location table
+     * @param addressID provided by user to look up location
+     * @param connection establishes database connection
+     * @return return location id to look up vehicle_id
+     * @throws SQLException
+     */
     public boolean getLocation(int addressID, Connection connection) throws SQLException {
 
         PreparedStatement statement = connection.prepareStatement(
@@ -74,6 +90,14 @@ public class ViewVehiclesAsCustomer implements Command {
         return addressNumber;
     }
 
+    /**
+     * <P>
+     *     this function takes a city name provided and looks up the city code for it in the correct table.
+     * @param cityName this is taken from the user input
+     * @param connection to connect to our database
+     * @return returns city_code for the city provided
+     * @throws SQLException
+     */
     public String getCityCode(String cityName, Connection connection)throws SQLException {
 
 
@@ -90,6 +114,13 @@ public class ViewVehiclesAsCustomer implements Command {
         return null;
     }
 
+    /**
+     * <p>
+     *     This function takes a table of data and prints the columns we specify
+     * @param data our data in a table
+     * @param columnNames name of columns in our table
+     * @throws SQLException
+     */
     public static void printResults(ResultSet data, String... columnNames) throws SQLException {
         for (String column : columnNames) {
             System.out.printf("%s\t", column);
