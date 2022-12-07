@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 /**
  * Command used to log in to the application.
- * TODO: Requires rewrite after database refactor.
+ * Optional arguments: -employee Used to specify the attempted login is for employee access level.
  *
  * @author Callan.
  */
@@ -28,16 +28,24 @@ public class LoginCommand implements Command {
         System.out.print("Password: ");
         String password = scanner.nextLine();
 
+        boolean employeeLogin = args.containsKey("employee");
+
         try {
             Postgres postgres = new Postgres();
-            if (login("customer", username, password, postgres.getConnection())) {
-                Application.role = Role.CUSTOMER;
-                System.out.println("Customer login successful.");
-            } else if (login("employee", username, password, postgres.getConnection())) {
-                Application.role = Role.EMPLOYEE;
-                System.out.println("Employee login successful.");
+            if (employeeLogin) {
+                if (login("employee", username, password, postgres.getConnection())) {
+                    Application.role = Role.EMPLOYEE;
+                    System.out.println("Employee login successful.");
+                } else {
+                    System.out.println("Invalid employee credentials, login aborted.");
+                }
             } else {
-                System.out.println("Invalid credentials, login aborted.");
+                if (login("customer", username, password, postgres.getConnection())) {
+                    Application.role = Role.CUSTOMER;
+                    System.out.println("Customer login successful.");
+                } else {
+                    System.out.println("Invalid customer credentials, login aborted.");
+                }
             }
             postgres.getConnection().close();
         } catch (SQLException e) {
