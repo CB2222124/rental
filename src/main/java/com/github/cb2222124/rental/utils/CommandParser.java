@@ -42,7 +42,7 @@ public class CommandParser {
                 arguments.put(tokens.get(i).substring(1), "");
                 valueNext = true;
             } else if (valueNext) {
-                arguments.put(tokens.get(i - 1), tokens.get(i));
+                arguments.put(tokens.get(i - 1).substring(1), tokens.get(i));
                 valueNext = false;
             }
         }
