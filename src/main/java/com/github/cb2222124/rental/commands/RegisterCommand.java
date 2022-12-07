@@ -3,14 +3,19 @@ package com.github.cb2222124.rental.commands;
 import com.github.cb2222124.rental.Application;
 import com.github.cb2222124.rental.models.Command;
 import com.github.cb2222124.rental.models.Role;
-import com.github.cb2222124.rental.utils.Postgres;
 
-import java.util.Scanner;
+import java.util.HashMap;
 
+/**
+ * Command used to register a customer account.
+ * TODO: Implement.
+ *
+ * @author Callan.
+ */
 public class RegisterCommand implements Command {
 
     @Override
-    public void execute() {
+    public void execute(HashMap<String, String> args) {
         //TODO: Implement.
     }
 

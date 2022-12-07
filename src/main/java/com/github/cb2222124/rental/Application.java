@@ -3,10 +3,17 @@ package com.github.cb2222124.rental;
 import com.github.cb2222124.rental.commands.*;
 import com.github.cb2222124.rental.models.Command;
 import com.github.cb2222124.rental.models.Role;
+import com.github.cb2222124.rental.utils.CommandParser;
 
 import java.util.LinkedHashMap;
 import java.util.Scanner;
 
+/**
+ * Application entry point responsible for registering available commands and executing a
+ * Read-Evaluate-Print-Loop.
+ *
+ * @author Callan.
+ */
 public class Application {
 
     public static Role role = Role.NONE;
@@ -50,10 +57,11 @@ public class Application {
     @SuppressWarnings("InfiniteLoopStatement")
     private static void startREPL() {
         Scanner scanner = new Scanner(System.in);
+        CommandParser parser = new CommandParser();
         while (true) {
             String input = scanner.nextLine();
-            Command command = commands.get(input.toLowerCase());
-            if (command != null && command.isAvailable()) command.execute();
+            Command command = commands.get(parser.getCommand(input));
+            if (command != null && command.isAvailable()) command.execute(parser.getArguments(input));
             else System.out.println("'" + input + "'" + " is not a valid command. Try 'commands'.");
             System.out.println();
         }

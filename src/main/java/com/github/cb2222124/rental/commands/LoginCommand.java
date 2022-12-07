@@ -9,15 +9,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
- * TODO: Consider when customer and employee share login credentials.
+ * Command used to log in to the application.
+ * TODO: Requires rewrite after database refactor.
+ *
+ * @author Callan.
  */
 public class LoginCommand implements Command {
 
     @Override
-    public void execute() {
+    public void execute(HashMap<String, String> args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Username: ");
         String username = scanner.nextLine();

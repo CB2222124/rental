@@ -5,6 +5,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * Utility class for connecting to a Postgres Database.
+ * NOTE: In a deployed application the URL and properties of this class should be stored externally.
+ *
+ * @author Callan.
+ */
 public class Postgres {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/rental";
