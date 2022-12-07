@@ -17,7 +17,7 @@ import java.util.Scanner;
  */
 public class Application {
 
-    public static User user = new User();
+    public static User user = new User(Role.NONE, 0);
     public static final LinkedHashMap<String, Command> commands = new LinkedHashMap<>();
 
     public static void main(String[] args) {

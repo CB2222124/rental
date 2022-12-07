@@ -12,8 +12,9 @@ public class User {
     private Role role;
     private int id;
 
-    public User() {
-        this.role = Role.NONE;
+    public User(Role role, int id) {
+        this.role = role;
+        this.id = id;
     }
 
     public void updateUser(Role role, int id) {
