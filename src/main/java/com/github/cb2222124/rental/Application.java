@@ -3,6 +3,7 @@ package com.github.cb2222124.rental;
 import com.github.cb2222124.rental.commands.*;
 import com.github.cb2222124.rental.models.Command;
 import com.github.cb2222124.rental.models.Role;
+import com.github.cb2222124.rental.models.User;
 import com.github.cb2222124.rental.utils.CommandParser;
 
 import java.util.LinkedHashMap;
@@ -16,7 +17,7 @@ import java.util.Scanner;
  */
 public class Application {
 
-    public static Role role = Role.NONE;
+    public static User user = new User(Role.NONE, 0);
     public static final LinkedHashMap<String, Command> commands = new LinkedHashMap<>();
 
     public static void main(String[] args) {

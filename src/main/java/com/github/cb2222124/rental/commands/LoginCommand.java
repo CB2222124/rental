@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -33,18 +34,21 @@ public class LoginCommand implements Command {
         try {
             Postgres postgres = new Postgres();
             if (employeeLogin) {
-                if (login("employee", username, password, postgres.getConnection())) {
-                    Application.role = Role.EMPLOYEE;
+                try {
+                    int id = login("employee", username, password, postgres.getConnection());
+                    Application.user.updateUser(Role.EMPLOYEE, id);
                     System.out.println("Employee login successful.");
-                } else {
+                } catch (NoSuchElementException e) {
                     System.out.println("Invalid employee credentials, login aborted.");
                 }
             } else {
-                if (login("customer", username, password, postgres.getConnection())) {
-                    Application.role = Role.CUSTOMER;
+                try {
+                    int id = login("customer", username, password, postgres.getConnection());
+                    Application.user.updateUser(Role.CUSTOMER, id);
                     System.out.println("Customer login successful.");
-                } else {
+                } catch (NoSuchElementException e) {
                     System.out.println("Invalid customer credentials, login aborted.");
+                    System.out.println("Attempting to access an employee account? Try 'login -employee'.");
                 }
             }
             postgres.getConnection().close();
@@ -53,18 +57,20 @@ public class LoginCommand implements Command {
         }
     }
 
-    private boolean login(String table, String username, String password, Connection connection) throws SQLException {
+    private int login(String table, String username, String password, Connection connection)
+            throws SQLException, NoSuchElementException {
         PreparedStatement statement = connection.prepareStatement(
-                "SELECT * FROM " + table + " WHERE username = ? AND password = ?");
+                "SELECT " + table + "_id FROM " + table + " WHERE username = ? AND password = ?");
         statement.setString(1, username);
         statement.setString(2, password);
         ResultSet result = statement.executeQuery();
-        return result.next();
+        if (!result.next()) throw new NoSuchElementException();
+        return result.getInt(1);
     }
 
     @Override
     public boolean isAvailable() {
-        return Application.role == Role.NONE;
+        return Application.user.getRole() == Role.NONE;
     }
 
     @Override
