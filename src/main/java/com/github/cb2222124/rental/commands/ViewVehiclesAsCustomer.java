@@ -12,41 +12,98 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * author @ Rania
+ */
 public class ViewVehiclesAsCustomer implements Command {
+
+    Scanner scanner = new Scanner(System.in);
     @Override
     public void execute() {
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Please enter a country: ");
-        String country = scanner.nextLine();
-        System.out.print("Please enter a city: ");
-        String city = scanner.nextLine();
+        System.out.println("Enter location ID: \n");
+        int locationID = Integer.parseInt(scanner.nextLine());
 
         try {
             Postgres postgres = new Postgres();
-            searchVehicle(country,city, postgres.getConnection());
-                System.out.printf("Available cars in %s %s : ", country, city);
-
+            searchVehicle(locationID,postgres.getConnection());
 
             postgres.getConnection().close();
         } catch (SQLException e) {
-            System.out.println("No available vehicles in specified location.");
+            System.out.println("Connection failed.");
+            System.out.println(e);
         }
-
     }
 
-/* SELECT * FROM vehicle right join location ON location.location_id= vehicle.location_id
- */
-    private boolean searchVehicle(String country, String city, Connection connection) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(
-                "SELECT * FROM location WHERE country = ? AND city = ?");
 
-        statement.setString(1, country);
-        statement.setString(2, city);
+    private boolean searchVehicle(int locationID, Connection connection) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(
+                "SELECT * FROM vehicle WHERE location_id = ? AND available = true");
+
+        statement.setInt(1, locationID);
+
 
         ResultSet result = statement.executeQuery();
+        printResults(result,"vehicle_id","reg" ,"make","model" , "available", "location_id" , "daily_fee");
         return result.next();
     }
+
+    public boolean getLocation(int addressID, Connection connection) throws SQLException {
+
+        PreparedStatement statement = connection.prepareStatement(
+                "SELECT location_id FROM location WHERE address_id = ? ");
+        statement.setInt(1, addressID);
+
+
+        ResultSet result = statement.executeQuery();
+
+        return result.next();
+    }
+    public int getAddress(String cityCode, Connection connection) throws SQLException {
+
+        PreparedStatement statement = connection.prepareStatement(
+                "SELECT * FROM address WHERE city_code = ? ");
+        statement.setString(1, cityCode);
+
+
+        ResultSet result = statement.executeQuery();
+        printResults(result, "Address Number", "House Number", "Street", "Postcode");
+
+        System.out.println("Please select address number");
+        int addressNumber = Integer.parseInt(scanner.nextLine());
+        return addressNumber;
+    }
+
+    public String getCityCode(String cityName, Connection connection)throws SQLException {
+
+
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT city_code FROM city WHERE city = ? ");
+            statement.setString(1, cityName);
+
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                String cityCode = result.getString("city_code");
+                System.out.println(cityCode);
+                return cityCode;
+            }
+        return null;
+    }
+
+    public static void printResults(ResultSet data, String... columnNames) throws SQLException {
+        for (String column : columnNames) {
+            System.out.printf("%s\t", column);
+        }
+        System.out.printf("\n");
+
+        while (data.next()) {
+            for (String column : columnNames) {
+                System.out.printf("%s\t", data.getString(column));
+            }
+            System.out.printf("\n");
+        }
+    }
+
 
 
     @Override
