@@ -11,6 +11,7 @@ services:
     volumes:
       - ./create-tables.sql:/docker-entrypoint-initdb.d/create-tables.sql
       - ./populate-tables.sql:/docker-entrypoint-initdb.d/populate-tables.sql
+      - ./create-functions.sql:/docker-entrypoint-initdb.d/create-functions.sql
     ports:
       - target: 5432
         published: 5432
