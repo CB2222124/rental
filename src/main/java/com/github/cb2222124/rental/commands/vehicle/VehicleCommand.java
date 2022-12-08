@@ -45,8 +45,11 @@ public class VehicleCommand implements Command {
             } catch (InputMismatchException e) {
                 System.out.println("Input type mismatch, vehicle operation aborted.");
             }
-        } else {
-            System.out.println("No valid vehicle operation specified.");
+        } else if (args.containsKey("delete")) {askForInput("vehicle ID");
+            Scanner scanner = new Scanner(System.in);
+            int id= scanner.nextInt();
+            //deleteVehicle(id,postgres.getConnection());
+
         }
     }
 
@@ -65,7 +68,16 @@ public class VehicleCommand implements Command {
         statement.executeUpdate();
 
     }
+    public static void deleteVehicle(int id, Connection connection) throws SQLException {
 
+        PreparedStatement statement = connection.prepareStatement(
+                "delete from vehicle where vehicle_id=?");
+        statement.setInt(1,id);
+
+
+        statement.executeUpdate();
+
+    }
     public void askForInput(String requestedInput) {
         System.out.print("Enter " + requestedInput + ":");
     }
