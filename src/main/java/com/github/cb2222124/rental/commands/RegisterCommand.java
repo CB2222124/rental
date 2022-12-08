@@ -36,8 +36,12 @@ public class RegisterCommand implements Command {
             String username = scanner.nextLine();
             System.out.print("Password: ");
             String password = scanner.nextLine();
-            addNewCustomer(firstname, lastname, username, password, postgres.getConnection());
-            System.out.println("Customer account '" + username + "' created, please login.");
+            if (username.isBlank() || password.isBlank()) {
+                System.out.println("Username and password cannot be blank, customer registration aborted.");
+            } else {
+                addNewCustomer(firstname, lastname, username, password, postgres.getConnection());
+                System.out.println("Customer account '" + username + "' created, please login.");
+            }
             postgres.getConnection().close();
         } catch (SQLException e) {
             System.out.println("Database error (" + e.getMessage() + "), customer registration aborted.");
