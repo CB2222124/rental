@@ -10,47 +10,43 @@ import java.sql.PreparedStatement;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
  * @author Rania
  */
-public class AddNewVehicleCommand implements Command {
-    Scanner scanner = new Scanner(System.in);
+public class VehicleCommand implements Command {
 
     @Override
     public void execute(HashMap<String, String> args) {
 
-        if (args.containsKey("addVehicle")) {
+        if (args.containsKey("add")) {
             try {
                 Postgres postgres = new Postgres();
+                Scanner scanner = new Scanner(System.in);
 
                 askForInput("Registration Number");
                 String reg = scanner.nextLine();
-
                 askForInput("Vehicle Make");
                 String make = scanner.nextLine();
-
                 askForInput("Vehicle Model");
                 String model = scanner.nextLine();
-
-                askForInput("Availability enter 'true' or 'false'");
-                boolean available = Boolean.parseBoolean(scanner.nextLine());
-
-
                 askForInput("Location ID");
                 int location_id = scanner.nextInt();
-
                 askForInput("Daily Fee");
                 double daily_fee = scanner.nextDouble();
+                addNewVehicle(reg, make, model, true, location_id, daily_fee, postgres.getConnection());
 
-                addNewVehicle(reg, make, model, available, location_id, daily_fee, postgres.getConnection());
-
-                System.out.println("Vehicle added successfully");
+                System.out.println("Vehicle added successfully.");
                 postgres.getConnection().close();
             } catch (SQLException e) {
-                System.out.println("Error vehicle not added");
+                System.out.println("Database error (" + e.getMessage() + "), vehicle operation aborted.");
+            } catch (InputMismatchException e) {
+                System.out.println("Input type mismatch, vehicle operation aborted.");
             }
+        } else {
+            System.out.println("No valid vehicle operation specified.");
         }
     }
 
@@ -70,9 +66,8 @@ public class AddNewVehicleCommand implements Command {
 
     }
 
-    public static void askForInput(String requestedInput) {
-        System.out.println("Enter " + requestedInput);
-
+    public void askForInput(String requestedInput) {
+        System.out.print("Enter " + requestedInput + ":");
     }
 
     @Override
@@ -82,7 +77,7 @@ public class AddNewVehicleCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "Add new vehicle ";
+        return "Perform operations on a specific vehicle.";
     }
 }
 
