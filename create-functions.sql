@@ -56,7 +56,7 @@ UPDATE vehicle
 SET reg = newReg WHERE vehicle.vehicle_id = vehicle_idToLook;
 
 ELSE
-	RAISE 'Vehicle % does not exist', vehicle_idToLook;
+	RAISE 'Oops looks like vehicle % does not exist', vehicle_idToLook;
 END IF;
 
 END;
@@ -78,7 +78,7 @@ UPDATE vehicle
 SET daily_fee = newDailyFee WHERE vehicle.vehicle_id = vehicle_idToLook;
 
 ELSE
-	RAISE 'Vehicle % does not exist', vehicle_idToLook;
+	RAISE 'Oops looks like vehicle % does not exist', vehicle_idToLook;
 END IF;
 
 END;

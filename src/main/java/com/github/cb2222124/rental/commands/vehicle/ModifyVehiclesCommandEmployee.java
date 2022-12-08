@@ -35,6 +35,7 @@ public class ModifyVehiclesCommandEmployee implements Command {
                 String newReg = scanner.next();
 
                 changeVehicleReg(vehicleID, newReg, postgres.getConnection());
+                System.out.println("Registration for vehicle:" + vehicleID +" updated successfully");
                 postgres.getConnection().close();
             }
             else if(args.containsKey("dailyFee")){
@@ -48,13 +49,13 @@ public class ModifyVehiclesCommandEmployee implements Command {
                 double newDailyFee = scanner.nextDouble();
 
                 changeDailyFee(vehicleID, newDailyFee, postgres.getConnection());
+                System.out.println("Daily fee for vehicle :" + vehicleID +" updated successfully");
                 postgres.getConnection().close();
             }
         } catch (SQLException e) {
-            System.out.print("Error connecting to database, search aborted.");
+            System.out.print(e.getMessage());
 
         }
-
 
     }
 
