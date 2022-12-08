@@ -6,10 +6,7 @@ import com.github.cb2222124.rental.models.Role;
 import com.github.cb2222124.rental.utils.OutputFormatter;
 import com.github.cb2222124.rental.utils.Postgres;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -45,10 +42,14 @@ public class ViewVehiclesCommandCustomer implements Command {
             System.out.print("Enter address ID: ");
             int addressID = scanner.nextInt();
             int locationID = getLocationID(addressID, postgres.getConnection());
-            //Show available vehicles at the given location.
-            showAvailableVehicles(locationID, postgres.getConnection());
+            //Show available vehicles at the given location, with any given filters.
+            String make = args.getOrDefault("make", "");
+            String model = args.getOrDefault("model", "");
+            showAvailableVehicles(make, model, locationID, postgres.getConnection());
             postgres.getConnection().close();
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
             System.out.println("Error connecting to database, search aborted.");
         } catch (NoSuchElementException e) {
             if (e.getMessage() == null) {
@@ -103,13 +104,15 @@ public class ViewVehiclesCommandCustomer implements Command {
         throw new NoSuchElementException("No location found for given address");
     }
 
-    private void showAvailableVehicles(int locationID, Connection connection) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM vehicle WHERE location_id = ? AND available = true");
-        statement.setInt(1, locationID);
+    private void showAvailableVehicles(String make, String model, int locationID, Connection connection) throws SQLException {
+        CallableStatement statement = connection.prepareCall("{call customerLocMakeModelSearch(?, ?, ?)}");
+        statement.setString(1, make);
+        statement.setString(2, model);
+        statement.setInt(3, locationID);
         ResultSet result = statement.executeQuery();
         if (result.isBeforeFirst()) {
-            String[] resultColumns = {"vehicle_id", "reg", "make", "model", "available", "location_id", "daily_fee"};
-            String[] outputColumns = {"Vehicle ID", "Registration", "Make", "Model", "Available", "Location ID", "Daily Rate"};
+            String[] resultColumns = {"vehicle_id", "location_id", "reg", "make", "model", "daily_fee"};
+            String[] outputColumns = {"Vehicle ID", "Location ID", "Registration", "Make", "Model", "Daily Rate"};
             new OutputFormatter().printResultSet(result, resultColumns, outputColumns);
         } else {
             System.out.println("No vehicles found.");
