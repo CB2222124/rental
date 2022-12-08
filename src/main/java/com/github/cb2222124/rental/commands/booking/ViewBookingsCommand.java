@@ -1,4 +1,4 @@
-package com.github.cb2222124.rental.commands;
+package com.github.cb2222124.rental.commands.booking;
 
 import com.github.cb2222124.rental.Application;
 import com.github.cb2222124.rental.models.Command;
