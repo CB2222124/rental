@@ -62,21 +62,20 @@ public class VehicleCommand implements Command {
                               Connection connection) throws SQLException {
 
         PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO vehicle (reg, make, model, available, location_id, daily_fee) VALUES (?,?,?,?,?,?)");
+                "INSERT INTO vehicle (reg, make, model, location_id, daily_fee) VALUES (?,?,?,?,?,?)");
 
         statement.setString(1, reg);
         statement.setString(2, make);
         statement.setString(3, model);
-        statement.setBoolean(4, true);
-        statement.setInt(5, locationID);
-        statement.setDouble(6, dailyFee);
+        statement.setInt(4, locationID);
+        statement.setDouble(5, dailyFee);
         statement.executeUpdate();
 
     }
 
     public boolean deleteVehicle(int id, Connection connection) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(
-                "DELETE FROM vehicle WHERE vehicle_id = ? AND available = true");
+                "DELETE FROM vehicle WHERE vehicle_id = ?");
         statement.setInt(1, id);
         return statement.executeUpdate() != 0;
     }
