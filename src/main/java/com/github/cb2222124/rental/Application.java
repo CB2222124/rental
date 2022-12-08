@@ -34,6 +34,7 @@ public class Application {
         commands.put("login", new LoginCommand());
         commands.put("search", new ViewVehiclesAsCustomer());
         commands.put("addVehicle", new AddNewVehicleCommand());
+        commands.put("vehicles", new EmployeeViewAllVehiclesCommand());
         commands.put("bookings", new ViewBookingsCommand());
         commands.put("logout", new LogoutCommand());
         commands.put("commands", new ListCommand());
