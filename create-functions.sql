@@ -30,7 +30,7 @@ $$ language plpgsql;
 
 */
 
-CREATE OR REPLACE FUNCTION updateReg(vehicle_idToLook INTEGER, newReg VARCHAR(8))
+CREATE FUNCTION updateReg(newReg VARCHAR, vehicle_idToLook INTEGER)
 RETURNS
 		VOID
 LANGUAGE PLPGSQL
@@ -46,7 +46,7 @@ UPDATE vehicle
 SET reg = newReg WHERE vehicle.vehicle_id = vehicle_idToLook;
 
 ELSE
-	RAISE 'Error vehicle % does not exist', vehicle_idToLook;
+	RAISE 'Vehicle % does not exist', vehicle_idToLook;
 END IF;
 
 END;

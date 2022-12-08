@@ -3,7 +3,7 @@ package com.github.cb2222124.rental.commands.vehicle;
 import com.github.cb2222124.rental.Application;
 import com.github.cb2222124.rental.models.Command;
 import com.github.cb2222124.rental.models.Role;
-import com.github.cb2222124.rental.utils.OutputFormatter;
+
 import com.github.cb2222124.rental.utils.Postgres;
 
 import java.sql.*;
@@ -48,7 +48,7 @@ public class ModifyVehiclesCommandEmployee implements Command {
             }
         } catch (SQLException e) {
             System.out.print("Error connecting to database, search aborted.");
-            System.out.print(e);
+            //System.out.print(e);
         }
 
 
