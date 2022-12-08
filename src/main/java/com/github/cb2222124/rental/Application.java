@@ -2,10 +2,7 @@ package com.github.cb2222124.rental;
 
 import com.github.cb2222124.rental.commands.*;
 import com.github.cb2222124.rental.commands.booking.ViewBookingsCommand;
-import com.github.cb2222124.rental.commands.vehicle.VehicleCommand;
-import com.github.cb2222124.rental.commands.vehicle.ViewVehiclesCommand;
-import com.github.cb2222124.rental.commands.vehicle.ViewVehiclesCommandCustomer;
-import com.github.cb2222124.rental.commands.vehicle.ViewVehiclesCommandEmployee;
+import com.github.cb2222124.rental.commands.vehicle.*;
 import com.github.cb2222124.rental.models.Command;
 import com.github.cb2222124.rental.models.Role;
 import com.github.cb2222124.rental.models.User;
@@ -38,6 +35,7 @@ public class Application {
         commands.put("register", new RegisterCommand());
         commands.put("login", new LoginCommand());
         commands.put("vehicles", new ViewVehiclesCommand());
+        commands.put("modify", new ModifyVehiclesCommandEmployee());
         commands.put("vehicle", new VehicleCommand());
         commands.put("bookings", new ViewBookingsCommand());
         commands.put("logout", new LogoutCommand());

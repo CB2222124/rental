@@ -48,13 +48,14 @@ public class ModifyVehiclesCommandEmployee implements Command {
             }
         } catch (SQLException e) {
             System.out.print("Error connecting to database, search aborted.");
+            System.out.print(e);
         }
 
 
     }
 
     public void changeVehicleReg(int vehicle_id, String newReg, Connection connection)throws SQLException{
-        CallableStatement statement = connection.prepareCall("{updateReg(?,?)}");
+        CallableStatement statement = connection.prepareCall("{call updateReg(?,?)}");
         statement.setString(1,newReg);
         statement.setInt(2,vehicle_id);
         statement.executeUpdate();

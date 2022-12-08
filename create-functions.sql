@@ -24,3 +24,30 @@ WHERE
     AND (v.model = input_model OR input_model = '');
 END;
 $$ language plpgsql;
+
+/*
+@author Rania, following function allows employees to update a vehicle reg only if it exists
+
+*/
+
+CREATE OR REPLACE FUNCTION updateReg(vehicle_idToLook INTEGER, newReg VARCHAR(8))
+RETURNS
+		VOID
+LANGUAGE PLPGSQL
+AS
+$$
+DECLARE
+
+BEGIN
+	IF EXISTS(
+	SELECT vehicle_id FROM vehicle WHERE vehicle_id = vehicle_idToLook)
+	THEN
+UPDATE vehicle
+SET reg = newReg WHERE vehicle.vehicle_id = vehicle_idToLook;
+
+ELSE
+	RAISE 'Error vehicle % does not exist', vehicle_idToLook;
+END IF;
+
+END;
+$$
