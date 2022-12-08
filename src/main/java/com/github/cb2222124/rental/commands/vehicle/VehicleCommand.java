@@ -14,60 +14,70 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
- * @author Rania
+ * @author Rania, Callan, Saeed
  */
 public class VehicleCommand implements Command {
 
     @Override
     public void execute(HashMap<String, String> args) {
 
-        if (args.containsKey("add")) {
-            try {
-                Postgres postgres = new Postgres();
-                Scanner scanner = new Scanner(System.in);
+        try {
+            Postgres postgres = new Postgres();
+            Scanner scanner = new Scanner(System.in);
 
-                askForInput("Registration Number");
+            //TODO: Lets process the first sequential argument. Otherwise we are prioritising arbitrary arguments which isn't obvious to the user.
+            if (args.containsKey("add")) {
+                System.out.print("Enter Registration: ");
                 String reg = scanner.nextLine();
-                askForInput("Vehicle Make");
+                System.out.print("Enter Make: ");
                 String make = scanner.nextLine();
-                askForInput("Vehicle Model");
+                System.out.print("Enter Model: ");
                 String model = scanner.nextLine();
-                askForInput("Location ID");
-                int location_id = scanner.nextInt();
-                askForInput("Daily Fee");
-                double daily_fee = scanner.nextDouble();
-                addNewVehicle(reg, make, model, true, location_id, daily_fee, postgres.getConnection());
-
+                System.out.print("Enter Location ID: ");
+                int locationID = scanner.nextInt();
+                System.out.print("Enter Daily Fee: ");
+                double dailyFee = scanner.nextDouble();
+                addNewVehicle(reg, make, model, locationID, dailyFee, postgres.getConnection());
                 System.out.println("Vehicle added successfully.");
-                postgres.getConnection().close();
-            } catch (SQLException e) {
-                System.out.println("Database error (" + e.getMessage() + "), vehicle operation aborted.");
-            } catch (InputMismatchException e) {
-                System.out.println("Input type mismatch, vehicle operation aborted.");
+            } else if (args.containsKey("delete")) {
+                System.out.print("Enter Vehicle ID: ");
+                int vehicle_id = scanner.nextInt();
+                if (deleteVehicle(vehicle_id, postgres.getConnection())) {
+                    System.out.println("Vehicle deleted successfully.");
+                } else {
+                    System.out.println("No vehicle deleted, verify ID and availability.");
+                }
+            } else {
+                System.out.println("No valid vehicle operation specified.");
             }
-        } else {
-            System.out.println("No valid vehicle operation specified.");
+            postgres.getConnection().close();
+        } catch (SQLException e) {
+            System.out.println("Database error (" + e.getMessage() + "), vehicle operation aborted.");
+        } catch (InputMismatchException e) {
+            System.out.println("Input type mismatch, vehicle operation aborted.");
         }
     }
 
-    public static void addNewVehicle(String reg, String make, String model, boolean availability,
-                                     int location, double dailyFee, Connection connection) throws SQLException {
+    public void addNewVehicle(String reg, String make, String model, int locationID, double dailyFee,
+                              Connection connection) throws SQLException {
 
         PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO vehicle (reg, make, model, available, location_id, daily_fee) VALUES (?, ?,?,?,?,?)");
+                "INSERT INTO vehicle (reg, make, model, location_id, daily_fee) VALUES (?,?,?,?,?,?)");
 
         statement.setString(1, reg);
         statement.setString(2, make);
         statement.setString(3, model);
-        statement.setBoolean(4, availability);
-        statement.setInt(5, location);
-        statement.setDouble(6, dailyFee);
+        statement.setInt(4, locationID);
+        statement.setDouble(5, dailyFee);
         statement.executeUpdate();
 
     }
 
-    public void askForInput(String requestedInput) {
-        System.out.print("Enter " + requestedInput + ":");
+    public boolean deleteVehicle(int id, Connection connection) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(
+                "DELETE FROM vehicle WHERE vehicle_id = ?");
+        statement.setInt(1, id);
+        return statement.executeUpdate() != 0;
     }
 
     @Override
