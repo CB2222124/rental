@@ -34,3 +34,39 @@ WHERE
     AND (v.model = input_model OR input_model = '');
 END;
 $$ language plpgsql;
+
+CREATE FUNCTION getLocationsWithAddresses()
+RETURNS TABLE (
+    location_id integer,
+    num varchar,
+    street varchar,
+    city_code varchar,
+    country_code varchar,
+    postcode varchar
+)
+AS $$ BEGIN Return Query
+SELECT location.location_id, address.num, address.street, address.city_code, address.country_code, address.postcode
+FROM location
+INNER JOIN address ON location.address_id = address.address_id;
+END;
+$$ language plpgsql;
+
+CREATE FUNCTION locationCityCountryCodeSearch(input_city_code varchar, input_country_code varchar)
+RETURNS TABLE (
+    location_id integer,
+    num varchar,
+    street varchar,
+    city_code varchar,
+    country_code varchar,
+    postcode varchar
+)
+AS $$ BEGIN Return Query
+SELECT
+    *
+FROM
+    getLocationsWithAddresses() l
+WHERE
+    (l.city_code = input_city_code OR input_city_code = '')
+    AND (l.country_code = input_country_code OR input_country_code = '');
+END;
+$$ language plpgsql;
