@@ -21,45 +21,70 @@ public class ViewVehiclesCommandCustomer implements Command {
 
     Scanner scanner = new Scanner(System.in);
 
+
     @Override
     public void execute(HashMap<String, String> args) {
-        try {
-            Postgres postgres = new Postgres();
-            //Take city name from user and show matching addresses.
-            System.out.print("Enter city name: ");
-            String city = scanner.nextLine();
-            String cityCode = getCityCode(city, postgres.getConnection());
-            showAddresses(cityCode, postgres.getConnection());
-            //Take address ID from user and find matching location.
-            System.out.print("Enter address ID: ");
-            int addressID = scanner.nextInt();
-            int locationID = getLocationID(addressID, postgres.getConnection());
-            //Show available vehicles at the given location.
-            showAvailableVehicles(locationID, postgres.getConnection());
-            postgres.getConnection().close();
-        } catch (SQLException e) {
-            System.out.println("Error connecting to database, search aborted.");
-            e.printStackTrace();
-        } catch (NoSuchElementException e) {
-            if (e.getMessage() == null) {
-                System.out.println("Invalid input, search aborted.");
-            } else {
-                System.out.println(e.getMessage() + ", search aborted.");
+        System.out.println("To search by city enter city\n To search by country enter country");
+        if (scanner.nextLine().equals("city")) {
+
+            try {
+                Postgres postgres = new Postgres();
+                //Take city name from user and show matching addresses.
+                System.out.print("Enter city name: ");
+                String city = scanner.nextLine();
+                String cityCode = getCityCode(city, postgres.getConnection());
+                showAddresses(cityCode, postgres.getConnection());
+                //Take address ID from user and find matching location.
+                System.out.print("Enter address ID: ");
+                int addressID = scanner.nextInt();
+                int locationID = getLocationID(addressID, postgres.getConnection());
+                //Show available vehicles at the given location.
+                showAvailableVehicles(locationID, postgres.getConnection());
+                postgres.getConnection().close();
+            } catch (SQLException e) {
+                System.out.println("Error connecting to database, search aborted.");
+                e.printStackTrace();
+            } catch (NoSuchElementException e) {
+                if (e.getMessage() == null) {
+                    System.out.println("Invalid input, search aborted.");
+                } else {
+                    System.out.println(e.getMessage() + ", search aborted.");
+                }
             }
         }
     }
 
-    public String getCityCode(String cityName, Connection connection) throws SQLException, NoSuchElementException {
-        PreparedStatement statement = connection.prepareStatement("SELECT city_code FROM city WHERE city = ? ");
-        statement.setString(1, cityName);
+    public String getCityCode(String searchBy, Connection connection) throws SQLException, NoSuchElementException {
+        if(searchBy == "city") {
+            PreparedStatement statement = connection.prepareStatement("SELECT city_code FROM city WHERE city = ? ");
+            statement.setString(1, searchBy);
+            ResultSet result = statement.executeQuery();
+            if (result.next()) return result.getString("city_code");
+            throw new NoSuchElementException("No address found for given city");
+        }
+        else if (searchBy == "countryName") {
+            PreparedStatement statement = connection.prepareStatement("SELECT country_code FROM city WHERE country =?");
+            statement.setString(1, searchBy);
+            ResultSet result = statement.executeQuery();
+            if (result.next()) return result.getString("country_code");
+        }
+            throw new NoSuchElementException("No address found for given country");
+    }
+
+    public String getCountryCode(String countryName, Connection connection) throws SQLException, NoSuchElementException {
+        PreparedStatement statement = connection.prepareStatement("SELECT country_code FROM city WHERE country = ? ");
+        statement.setString(1, countryName);
         ResultSet result = statement.executeQuery();
-        if (result.next()) return result.getString("city_code");
+        if (result.next()) return result.getString("country_code");
         throw new NoSuchElementException("No address found for given city");
     }
+
 
     public void showAddresses(String cityCode, Connection connection) throws SQLException, NoSuchElementException {
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM address WHERE city_code = ? ");
         statement.setString(1, cityCode);
+
+
         ResultSet result = statement.executeQuery();
         if (!result.isBeforeFirst()) throw new NoSuchElementException("No address found for given city");
         String[] resultColumns = {"address_id", "num", "street", "city_code", "country_code", "postcode"};
