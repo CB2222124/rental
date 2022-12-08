@@ -50,4 +50,26 @@ ELSE
 END IF;
 
 END;
+$$;
+
+CREATE FUNCTION updateDailyPrice(newDailyFee DOUBLE PRECISION, vehicle_idToLook INTEGER)
+    RETURNS
+        VOID
+    LANGUAGE PLPGSQL
+AS
 $$
+DECLARE
+
+BEGIN
+	IF EXISTS(
+	SELECT vehicle_id FROM vehicle WHERE vehicle_id = vehicle_idToLook)
+	THEN
+UPDATE vehicle
+SET daily_fee = newDailyFee WHERE vehicle.vehicle_id = vehicle_idToLook;
+
+ELSE
+	RAISE 'Vehicle % does not exist', vehicle_idToLook;
+END IF;
+
+END;
+$$;

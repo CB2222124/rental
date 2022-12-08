@@ -10,12 +10,19 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.Scanner;
 
+/**
+ * @author Rania allows employees to modify a selected vehicle
+ */
 public class ModifyVehiclesCommandEmployee implements Command {
     @Override
     public void execute(HashMap<String, String> args) {
 
         try{
-            if(args.containsKey("reg")) {
+            if(args.isEmpty()){
+                System.out.println("1:To modify vehicle reg type 'modify -reg'");
+                System.out.println("2:To modify vehicle daily fee type 'modify -dailyFee'");
+            }
+            else if(args.containsKey("reg")) {
 
                 Postgres postgres = new Postgres();
                 Scanner scanner = new Scanner(System.in);
@@ -37,18 +44,15 @@ public class ModifyVehiclesCommandEmployee implements Command {
                 System.out.println("Please enter vehicle ID:\n ");
                 int vehicleID = scanner.nextInt();
 
-                System.out.printf("Please enter new daily fee for vehicle ID: %d", vehicleID);
+                System.out.println("Please enter new daily fee: ");
                 double newDailyFee = scanner.nextDouble();
 
                 changeDailyFee(vehicleID, newDailyFee, postgres.getConnection());
                 postgres.getConnection().close();
             }
-            else{
-                System.out.println("Enter modify -reg or modify -dailyFee");
-            }
         } catch (SQLException e) {
             System.out.print("Error connecting to database, search aborted.");
-            //System.out.print(e);
+
         }
 
 
@@ -65,7 +69,7 @@ public class ModifyVehiclesCommandEmployee implements Command {
 
     public void changeDailyFee(int vehicle_id, double newDailyFee, Connection connection)throws SQLException{
 
-        PreparedStatement statement = connection.prepareStatement("UPDATE vehicle SET daily_fee =? WHERE vehicle_id = ?");
+        CallableStatement statement = connection.prepareCall("{call updateDailyPrice(?,?)}");
         statement.setDouble(1,newDailyFee);
         statement.setInt(2,vehicle_id);
         statement.executeUpdate();
