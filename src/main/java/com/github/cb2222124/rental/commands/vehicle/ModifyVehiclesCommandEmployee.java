@@ -58,15 +58,26 @@ public class ModifyVehiclesCommandEmployee implements Command {
 
     }
 
+    /**
+     * <p>
+     *     Function that makes call to database function to update a selected vehicles reg number
+     * @param vehicle_id taken from user to allow to search for a specific vehicle
+     * @param newReg taken from user to update reg of selected vehicle
+     */
     public void changeVehicleReg(int vehicle_id, String newReg, Connection connection)throws SQLException{
         CallableStatement statement = connection.prepareCall("{call updateReg(?,?)}");
         statement.setString(1,newReg);
         statement.setInt(2,vehicle_id);
         statement.executeUpdate();
 
-
     }
 
+    /**
+     * <p>
+     *      *     Function that makes call to database function to update a selected vehicles daily fee
+     * @param vehicle_id taken from user to allow to search for a specific vehicle
+     * @param newDailyFee taken from user to insert new value into daily fee of selected vehicle
+     */
     public void changeDailyFee(int vehicle_id, double newDailyFee, Connection connection)throws SQLException{
 
         CallableStatement statement = connection.prepareCall("{call updateDailyPrice(?,?)}");
