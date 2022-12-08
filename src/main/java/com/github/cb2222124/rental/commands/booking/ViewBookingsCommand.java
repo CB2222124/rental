@@ -36,15 +36,18 @@ public class ViewBookingsCommand implements Command {
                 return;
             }
             ResultSet result = statement.executeQuery();
-            if (!result.isBeforeFirst()) throw new NoSuchElementException("No address found for given city");
-            String[] resultColumns = {"booking_id", "customer_id", "vehicle_id", "pickup_loc", "dropoff_loc", "datefrom", "dateto"};
-            String[] outputColumns = {"Booking ID", "Customer ID", "Vehicle ID", "Pickup Location ID", "Drop off Location ID", "Collection Date", "Return Date"};
-            new OutputFormatter().printResultSet(result, resultColumns, outputColumns);
+            if (result.isBeforeFirst()) {
+                String[] resultColumns = {"booking_id", "customer_id", "vehicle_id", "pickup_loc", "dropoff_loc", "datefrom", "dateto"};
+                String[] outputColumns = {"Booking ID", "Customer ID", "Vehicle ID", "Pickup Location ID", "Drop off Location ID", "Collection Date", "Return Date"};
+                new OutputFormatter().printResultSet(result, resultColumns, outputColumns);
+            } else {
+                System.out.println("No active bookings for user.");
+            }
             postgres.getConnection().close();
         } catch (SQLException e) {
-            System.out.println("Error connecting to database, search aborted.");
+            System.out.println("Error connecting to database, booking search aborted.");
         } catch (NoSuchElementException e) {
-            System.out.println(e.getMessage() + ", search aborted");
+            System.out.println(e.getMessage() + ", booking search aborted.");
         }
     }
 
