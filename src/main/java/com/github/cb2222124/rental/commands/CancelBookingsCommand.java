@@ -15,10 +15,10 @@ import java.util.Scanner;
 
 
 /**
- *
+ * @author Liam
  */
 public class CancelBookingsCommand implements Command {
-//no scanners
+
     @Override
     public void execute(HashMap<String, String> args) {
         try {
@@ -28,10 +28,19 @@ public class CancelBookingsCommand implements Command {
                 int bookingIDCancel = cancelABooking(postgres.getConnection());
                 confirmCancellation(bookingIDCancel, postgres.getConnection());
             } else {
-                // select * from booking
-            }
-        } catch (SQLException e) {
+/*
+                // select * from
+                PreparedStatement statement = connection.prepareStatement("SELECT * FROM booking");
+               // ResultSet result = statement.executeQuery();
+               // if (result.isBeforeFirst()) {
+              //      String[] resultColumns = {"booking_id", "customer_id", "vehicle_id", "pickup_loc", "dropoff_loc", "datefrom", "dateto"};
+              //      String[] outputColumns = {"Booking ID", "Customer ID", "Vehicle ID", "Pickup Location ID", "Drop off Location ID", "Collection Date", "Return Date"};
+                    new OutputFormatter().printResultSet(result, resultColumns, outputColumns);
+                }
+          */  }
+        }catch(SQLException e){
             System.out.print("Error connecting to database, action aborted.");
+            }
         }
     }
     public int cancelABooking(Connection connection) throws SQLException { //function to return int?
