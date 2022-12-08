@@ -1,4 +1,4 @@
-package com.github.cb2222124.rental.commands;
+package com.github.cb2222124.rental.commands.vehicle;
 
 import com.github.cb2222124.rental.Application;
 import com.github.cb2222124.rental.models.Command;
@@ -17,7 +17,7 @@ import java.util.Scanner;
 /**
  * @author Rania, Callan
  */
-public class ViewVehiclesAsCustomer implements Command {
+public class ViewVehiclesCommandCustomer implements Command {
 
     Scanner scanner = new Scanner(System.in);
 
@@ -95,6 +95,6 @@ public class ViewVehiclesAsCustomer implements Command {
 
     @Override
     public String getDescription() {
-        return "Vehicles available at specific location.";
+        return "View vehicles available at specific location.";
     }
 }

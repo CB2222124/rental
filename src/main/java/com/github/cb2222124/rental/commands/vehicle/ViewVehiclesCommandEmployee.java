@@ -1,4 +1,4 @@
-package com.github.cb2222124.rental.commands;
+package com.github.cb2222124.rental.commands.vehicle;
 
 import com.github.cb2222124.rental.Application;
 import com.github.cb2222124.rental.models.Command;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 /**
  * @author Liam
  */
-public class EmployeeViewAllVehiclesCommand implements Command {
+public class ViewVehiclesCommandEmployee implements Command {
 
     @Override
     public void execute(HashMap<String, String> args) {
@@ -65,6 +65,6 @@ public class EmployeeViewAllVehiclesCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "View all vehicles or filter by booked only by adding -booked.";
+        return "View all vehicles, add '-booked' to filter by booked only.";
     }
 }
