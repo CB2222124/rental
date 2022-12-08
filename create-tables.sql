@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS employee (
     employee_id serial PRIMARY KEY,
-    username VARCHAR(25),
+    username VARCHAR(25) UNIQUE,
     password VARCHAR(25)
 );
 
