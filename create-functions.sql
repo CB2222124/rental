@@ -1,3 +1,13 @@
+CREATE FUNCTION isVehicleAvailable(input_vehicle_id integer)
+RETURNS BOOLEAN
+AS $$ BEGIN
+    IF NOT EXISTS (SELECT * FROM booking b WHERE b.vehicle_id = input_vehicle_id)
+        THEN RETURN true;
+        ELSE RETURN false;
+    END IF;
+END;
+$$ language plpgsql;
+
 CREATE FUNCTION customerLocMakeModelSearch(input_make varchar, input_model varchar, input_location integer)
 RETURNS TABLE (
   vehicle_id integer,
@@ -18,7 +28,7 @@ SELECT
 FROM
     vehicle v
 WHERE
-    v.available = true
+    isVehicleAvailable(v.vehicle_id)
     AND v.location_id = input_location
     AND (v.make = input_make OR input_make = '')
     AND (v.model = input_model OR input_model = '');

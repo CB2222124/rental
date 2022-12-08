@@ -38,8 +38,8 @@ public class ViewVehiclesCommandEmployee implements Command {
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM vehicle");
         ResultSet result = statement.executeQuery();
         if (result.isBeforeFirst()) {
-            String[] resultColumns = {"vehicle_id", "reg", "make", "model", "available", "location_id", "daily_fee"};
-            String[] outputColumns = {"Vehicle ID", "Registration", "Make", "Model", "Available", "Location ID", "Daily Rate"};
+            String[] resultColumns = {"vehicle_id", "reg", "make", "model", "location_id", "daily_fee"};
+            String[] outputColumns = {"Vehicle ID", "Registration", "Make", "Model", "Location ID", "Daily Rate"};
             new OutputFormatter().printResultSet(result, resultColumns, outputColumns);
         } else {
             System.out.println("No vehicles found.");

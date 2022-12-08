@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS customer (
     customer_id SERIAL PRIMARY KEY,
     firstname VARCHAR(50),
     lastname VARCHAR(50),
-    username VARCHAR(35),
+    username VARCHAR(35) UNIQUE,
     password VARCHAR(25),
     address_id SERIAL REFERENCES address(address_id)
 );
@@ -42,7 +42,6 @@ CREATE TABLE IF NOT EXISTS vehicle (
     reg VARCHAR(8),
     make VARCHAR(30),
     model VARCHAR(30),
-    available boolean,
     location_id INTEGER REFERENCES location(location_id),
     daily_fee numeric
 );
