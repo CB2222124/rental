@@ -24,28 +24,24 @@ public class ViewVehiclesCommandCustomer implements Command {
             Postgres postgres = new Postgres();
             Scanner scanner = new Scanner(System.in);
 
+            //Read optional arguments.
             String city = args.getOrDefault("city", "");
             String country = args.getOrDefault("country", "");
-
-            //Try to find addresses matching user input for city first, then country (if specified).
-            if (!city.isBlank()) {
-                String cityCode = getCityCode(city, postgres.getConnection());
-                showAddresses("city_code", cityCode, postgres.getConnection());
-            } else if (!country.isBlank()) {
-                String countryCode = getCountryCode(country, postgres.getConnection());
-                showAddresses("country_code", countryCode, postgres.getConnection());
-            } else {
-                showAddresses(postgres.getConnection());
-            }
-
-            //Take address ID from user and find matching location.
-            System.out.print("Enter address ID: ");
-            int addressID = scanner.nextInt();
-            int locationID = getLocationID(addressID, postgres.getConnection());
-            //Show available vehicles at the given location, with any given filters.
             String make = args.getOrDefault("make", "");
             String model = args.getOrDefault("model", "");
+
+            //Translate city/country names to codes and find matching locations.
+            String cityCode = city.isBlank() ? "" : getCityCode(city, postgres.getConnection());
+            String countryCode = country.isBlank() ? "" : getCountryCode(country, postgres.getConnection());
+            showLocations(cityCode, countryCode, postgres.getConnection());
+
+            //Show vehicles that match users arguments.
+            //Note: Currently make model filter is applied once the customer commits to a location (Per the brief),
+            //a future iteration might allow the user to find a location that has a certain make.
+            System.out.print("Enter Location ID to search: ");
+            int locationID = scanner.nextInt();
             showAvailableVehicles(make, model, locationID, postgres.getConnection());
+
             postgres.getConnection().close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -77,31 +73,18 @@ public class ViewVehiclesCommandCustomer implements Command {
         throw new NoSuchElementException("No addresses found for given country");
     }
 
-    public void showAddresses(String codeName, String codeValue, Connection connection) throws SQLException, NoSuchElementException {
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM address WHERE " + codeName + " = ? ");
-        statement.setString(1, codeValue);
+    private void showLocations(String cityCode, String countryCode, Connection connection) throws SQLException {
+        CallableStatement statement = connection.prepareCall("{call locationCityCountryCodeSearch(?, ?)}");
+        statement.setString(1, cityCode);
+        statement.setString(2, countryCode);
         ResultSet result = statement.executeQuery();
-        if (!result.isBeforeFirst()) throw new NoSuchElementException("No addresses found for given arguments");
-        String[] resultColumns = {"address_id", "num", "street", "city_code", "country_code", "postcode"};
-        String[] outputColumns = {"Address ID", "Property Name/Number", "Street", "City Code", "Country Code", "Post Code"};
-        new OutputFormatter().printResultSet(result, resultColumns, outputColumns);
-    }
-
-    public void showAddresses(Connection connection) throws SQLException, NoSuchElementException {
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM address");
-        ResultSet result = statement.executeQuery();
-        if (!result.isBeforeFirst()) throw new NoSuchElementException("No addresses available.");
-        String[] resultColumns = {"address_id", "num", "street", "city_code", "country_code", "postcode"};
-        String[] outputColumns = {"Address ID", "Property Name/Number", "Street", "City Code", "Country Code", "Post Code"};
-        new OutputFormatter().printResultSet(result, resultColumns, outputColumns);
-    }
-
-    public int getLocationID(int addressID, Connection connection) throws SQLException, NoSuchElementException {
-        PreparedStatement statement = connection.prepareStatement("SELECT location_id FROM location WHERE address_id = ? ");
-        statement.setInt(1, addressID);
-        ResultSet result = statement.executeQuery();
-        if (result.next()) return result.getInt("location_id");
-        throw new NoSuchElementException("No location found for given address");
+        if (result.isBeforeFirst()) {
+            String[] resultColumns = {"location_id", "num", "street", "city_code", "country_code", "postcode"};
+            String[] outputColumns = {"Location ID", "Property Name/Num", "Street", "City Code", "Country Code", "Post Code"};
+            new OutputFormatter().printResultSet(result, resultColumns, outputColumns);
+        } else {
+            System.out.println("No locations found.");
+        }
     }
 
     private void showAvailableVehicles(String make, String model, int locationID, Connection connection) throws SQLException {
