@@ -47,6 +47,8 @@ public class VehicleCommand implements Command {
                 } else {
                     System.out.println("No vehicle deleted, verify ID and availability.");
                 }
+            } else {
+                System.out.println("No valid vehicle operation specified.");
             }
             postgres.getConnection().close();
         } catch (SQLException e) {
