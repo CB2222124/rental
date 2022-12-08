@@ -4,8 +4,6 @@ import com.github.cb2222124.rental.commands.*;
 import com.github.cb2222124.rental.commands.booking.ViewBookingsCommand;
 import com.github.cb2222124.rental.commands.vehicle.VehicleCommand;
 import com.github.cb2222124.rental.commands.vehicle.ViewVehiclesCommand;
-import com.github.cb2222124.rental.commands.vehicle.ViewVehiclesCommandCustomer;
-import com.github.cb2222124.rental.commands.vehicle.ViewVehiclesCommandEmployee;
 import com.github.cb2222124.rental.models.Command;
 import com.github.cb2222124.rental.models.Role;
 import com.github.cb2222124.rental.models.User;
@@ -68,6 +66,7 @@ public class Application {
         Scanner scanner = new Scanner(System.in);
         CommandParser parser = new CommandParser();
         while (true) {
+            System.out.print("> ");
             String input = scanner.nextLine();
             Command command = commands.get(parser.getCommand(input));
             if (command != null && command.isAvailable()) command.execute(parser.getArguments(input));
