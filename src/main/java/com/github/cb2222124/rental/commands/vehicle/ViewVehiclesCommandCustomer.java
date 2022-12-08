@@ -19,17 +19,28 @@ import java.util.Scanner;
  */
 public class ViewVehiclesCommandCustomer implements Command {
 
-    Scanner scanner = new Scanner(System.in);
 
     @Override
     public void execute(HashMap<String, String> args) {
+
         try {
             Postgres postgres = new Postgres();
-            //Take city name from user and show matching addresses.
-            System.out.print("Enter city name: ");
-            String city = scanner.nextLine();
-            String cityCode = getCityCode(city, postgres.getConnection());
-            showAddresses(cityCode, postgres.getConnection());
+            Scanner scanner = new Scanner(System.in);
+
+            String city = args.getOrDefault("city", "");
+            String country = args.getOrDefault("country", "");
+
+            //Try to find addresses matching user input for city first, then country (if specified).
+            if (!city.isBlank()) {
+                String cityCode = getCityCode(city, postgres.getConnection());
+                showAddresses("city_code", cityCode, postgres.getConnection());
+            } else if (!country.isBlank()) {
+                String countryCode = getCountryCode(country, postgres.getConnection());
+                showAddresses("country_code", countryCode, postgres.getConnection());
+            } else {
+                showAddresses(postgres.getConnection());
+            }
+
             //Take address ID from user and find matching location.
             System.out.print("Enter address ID: ");
             int addressID = scanner.nextInt();
@@ -39,7 +50,6 @@ public class ViewVehiclesCommandCustomer implements Command {
             postgres.getConnection().close();
         } catch (SQLException e) {
             System.out.println("Error connecting to database, search aborted.");
-            e.printStackTrace();
         } catch (NoSuchElementException e) {
             if (e.getMessage() == null) {
                 System.out.println("Invalid input, search aborted.");
@@ -47,6 +57,7 @@ public class ViewVehiclesCommandCustomer implements Command {
                 System.out.println(e.getMessage() + ", search aborted.");
             }
         }
+
     }
 
     public String getCityCode(String cityName, Connection connection) throws SQLException, NoSuchElementException {
@@ -54,14 +65,31 @@ public class ViewVehiclesCommandCustomer implements Command {
         statement.setString(1, cityName);
         ResultSet result = statement.executeQuery();
         if (result.next()) return result.getString("city_code");
-        throw new NoSuchElementException("No address found for given city");
+        throw new NoSuchElementException("No addresses found for given city");
     }
 
-    public void showAddresses(String cityCode, Connection connection) throws SQLException, NoSuchElementException {
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM address WHERE city_code = ? ");
-        statement.setString(1, cityCode);
+    public String getCountryCode(String countryName, Connection connection) throws SQLException, NoSuchElementException {
+        PreparedStatement statement = connection.prepareStatement("SELECT country_code FROM country WHERE country = ? ");
+        statement.setString(1, countryName);
         ResultSet result = statement.executeQuery();
-        if (!result.isBeforeFirst()) throw new NoSuchElementException("No address found for given city");
+        if (result.next()) return result.getString("country_code");
+        throw new NoSuchElementException("No addresses found for given country");
+    }
+
+    public void showAddresses(String codeName, String codeValue, Connection connection) throws SQLException, NoSuchElementException {
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM address WHERE " + codeName + " = ? ");
+        statement.setString(1, codeValue);
+        ResultSet result = statement.executeQuery();
+        if (!result.isBeforeFirst()) throw new NoSuchElementException("No addresses found for given arguments");
+        String[] resultColumns = {"address_id", "num", "street", "city_code", "country_code", "postcode"};
+        String[] outputColumns = {"Address ID", "Property Name/Number", "Street", "City Code", "Country Code", "Post Code"};
+        new OutputFormatter().printResultSet(result, resultColumns, outputColumns);
+    }
+
+    public void showAddresses(Connection connection) throws SQLException, NoSuchElementException {
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM address");
+        ResultSet result = statement.executeQuery();
+        if (!result.isBeforeFirst()) throw new NoSuchElementException("No addresses available.");
         String[] resultColumns = {"address_id", "num", "street", "city_code", "country_code", "postcode"};
         String[] outputColumns = {"Address ID", "Property Name/Number", "Street", "City Code", "Country Code", "Post Code"};
         new OutputFormatter().printResultSet(result, resultColumns, outputColumns);
