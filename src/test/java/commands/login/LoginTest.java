@@ -2,6 +2,7 @@ package commands.login;
 
 import com.github.cb2222124.rental.commands.LoginCommand;
 import com.github.cb2222124.rental.utils.Postgres;
+import commands.DatabaseTest;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;

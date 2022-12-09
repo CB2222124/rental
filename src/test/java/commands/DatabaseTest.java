@@ -1,4 +1,4 @@
-package commands.login;
+package commands;
 
 import com.github.cb2222124.rental.utils.Postgres;
 import org.junit.jupiter.api.BeforeEach;
