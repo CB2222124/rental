@@ -41,7 +41,7 @@ public class ViewBookingsCommand implements Command {
                 String[] outputColumns = {"Booking ID", "Customer ID", "Vehicle ID", "Pickup Location ID", "Drop off Location ID", "Collection Date", "Return Date", "Customer Collected"};
                 new OutputFormatter().printResultSet(result, resultColumns, outputColumns);
             } else {
-                System.out.println("No active bookings for user.");
+                System.out.println("No active bookings.");
             }
             postgres.getConnection().close();
         } catch (SQLException e) {

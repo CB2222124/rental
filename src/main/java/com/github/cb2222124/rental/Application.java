@@ -42,6 +42,7 @@ public class Application {
         commands.put("modify", new VehicleModifyCommandEmployee());
         commands.put("book", new BookCommand());
         commands.put("bookings", new ViewBookingsCommand());
+        commands.put("cancelb", new EmployeeCancelBookingsCommand());
         commands.put("logout", new LogoutCommand());
         commands.put("commands", new ListCommand());
         commands.put("exit", new ExitCommand());
