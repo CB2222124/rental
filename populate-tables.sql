@@ -35,4 +35,4 @@ insert into vehicle (reg, make, model, location_id, daily_fee) values ('VC88 HDV
 insert into vehicle (reg, make, model, location_id, daily_fee) values ('HR91 JAO', 'Chevrolet', 'Silverado', 3, 186.17);
 
 
-insert into booking (customer_id, vehicle_id, pickup_loc, dropoff_loc, datefrom, dateto) values (2, 3, 3, 1, '2022-12-10', '2022-12-15');
+insert into booking (customer_id, vehicle_id, pickup_loc, dropoff_loc, datefrom, dateto, with_customer) values (2, 3, 3, 1, '2022-12-21', '2022-12-28', false);

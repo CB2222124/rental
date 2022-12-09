@@ -3,7 +3,7 @@ package com.github.cb2222124.rental;
 import com.github.cb2222124.rental.commands.*;
 import com.github.cb2222124.rental.commands.booking.BookCommand;
 import com.github.cb2222124.rental.commands.booking.ViewBookingsCommand;
-import com.github.cb2222124.rental.commands.vehicle.ModifyVehiclesCommandEmployee;
+import com.github.cb2222124.rental.commands.vehicle.VehicleModifyCommandEmployee;
 import com.github.cb2222124.rental.commands.vehicle.VehicleCommand;
 import com.github.cb2222124.rental.commands.vehicle.ViewVehiclesCommand;
 import com.github.cb2222124.rental.models.Command;
@@ -39,7 +39,7 @@ public class Application {
         commands.put("login", new LoginCommand());
         commands.put("vehicles", new ViewVehiclesCommand());
         commands.put("vehicle", new VehicleCommand());
-        commands.put("modify", new ModifyVehiclesCommandEmployee());
+        commands.put("modify", new VehicleModifyCommandEmployee());
         commands.put("book", new BookCommand());
         commands.put("bookings", new ViewBookingsCommand());
         commands.put("logout", new LogoutCommand());

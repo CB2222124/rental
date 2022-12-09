@@ -1,3 +1,4 @@
+--Checks if a vehicle ID is present in the booking table. Callan.
 CREATE FUNCTION isVehicleAvailable(input_vehicle_id integer)
 RETURNS BOOLEAN
 AS $$ BEGIN
@@ -8,6 +9,7 @@ AS $$ BEGIN
 END;
 $$ language plpgsql;
 
+--Filters vehicles at a location by make and model. Liam.
 CREATE FUNCTION customerLocMakeModelSearch(input_make varchar, input_model varchar, input_location integer)
 RETURNS TABLE (
   vehicle_id integer,
@@ -35,11 +37,7 @@ WHERE
 END;
 $$ language plpgsql;
 
-/*
-@author Rania, following function allows employees to update a vehicle reg only if it exists
-
-*/
-
+--Function allows employees to update a vehicle reg only if it exists. Rania.
 CREATE FUNCTION updateReg(newReg VARCHAR, vehicle_idToLook INTEGER)
 RETURNS
 		VOID
@@ -62,6 +60,7 @@ END IF;
 END;
 $$;
 
+--Function allows employees to update a vehicles daily price only if it exists. Rania.
 CREATE FUNCTION updateDailyPrice(newDailyFee DOUBLE PRECISION, vehicle_idToLook INTEGER)
     RETURNS
         VOID
@@ -83,6 +82,8 @@ END IF;
 
 END;
 $$;
+
+--Fetches a table that shows all locations and their associated addresses. Callan.
 CREATE FUNCTION getLocationsWithAddresses()
 RETURNS TABLE (
     location_id integer,
@@ -99,6 +100,7 @@ INNER JOIN address ON location.address_id = address.address_id;
 END;
 $$ language plpgsql;
 
+--Filters locations by city and country code. Callan.
 CREATE FUNCTION locationCityCountryCodeSearch(input_city_code varchar, input_country_code varchar)
 RETURNS TABLE (
     location_id integer,
@@ -119,6 +121,7 @@ WHERE
 END;
 $$ language plpgsql;
 
+--Adds a new booking. Callan.
 CREATE FUNCTION addBooking(input_customer_id integer, input_vehicle_id integer, input_dropoff integer, input_date_from date, input_date_to date)
 RETURNS VOID
 AS $$ BEGIN
@@ -128,7 +131,8 @@ INSERT INTO booking (
     pickup_loc,
     dropoff_loc,
     datefrom,
-    dateto
+    dateto,
+    with_customer
 )
 VALUES (
     input_customer_id,
@@ -136,7 +140,8 @@ VALUES (
     (SELECT location_id FROM vehicle WHERE vehicle_id = input_vehicle_id),
     input_dropoff,
     input_date_from,
-    input_date_to
+    input_date_to,
+    false
 );
 END;
 $$ language plpgsql;
