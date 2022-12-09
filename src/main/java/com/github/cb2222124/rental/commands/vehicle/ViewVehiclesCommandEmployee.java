@@ -12,7 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-/**
+/**Command used to view all vehicles in the rental system
+ * Argument flag '-booked' used in combination to filter vehicle search by those that have active bookings
  * @author Liam
  */
 public class ViewVehiclesCommandEmployee implements Command {
@@ -34,6 +35,11 @@ public class ViewVehiclesCommandEmployee implements Command {
         }
     }
 
+    /**
+     * Function outputting all vehicles on database associated information.
+     * @param connection
+     * @throws SQLException
+     */
     public void showAllVehicles(Connection connection) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM vehicle");
         ResultSet result = statement.executeQuery();
@@ -46,6 +52,11 @@ public class ViewVehiclesCommandEmployee implements Command {
         }
     }
 
+    /**
+     * Function shows all vehicles on database with join to associated booking information.
+     * @param connection
+     * @throws SQLException
+     */
     public void showBookedVehicles(Connection connection) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("select vehicle.vehicle_id, vehicle.reg, vehicle.make, vehicle.model, booking.customer_id, booking.datefrom, booking.dateto FROM vehicle INNER JOIN booking ON booking.vehicle_id = vehicle.vehicle_id ORDER BY vehicle.vehicle_id;");
         ResultSet result = statement.executeQuery();

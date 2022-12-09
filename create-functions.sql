@@ -186,3 +186,24 @@ ELSE RAISE 'Cannot delete booking, as does not exist or vehicle already in you p
 END IF;
 END;
 $$;
+
+--Rania: Function cancels booking if exists and vehicle not in customer possession
+CREATE FUNCTION cancel_booking_e(booking_to_cancel INTEGER)
+    RETURNS
+        VOID
+    LANGUAGE PLPGSQL
+AS
+$$
+DECLARE
+BEGIN
+	IF EXISTS(
+		SELECT * FROM booking
+		WHERE booking.booking_id = booking_to_cancel
+		)
+	THEN
+DELETE FROM booking WHERE booking_id = booking_to_cancel;
+
+ELSE RAISE 'Cannot delete booking, as does not exist';
+END IF;
+END;
+$$;
