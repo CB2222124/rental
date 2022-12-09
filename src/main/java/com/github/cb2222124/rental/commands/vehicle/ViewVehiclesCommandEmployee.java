@@ -12,33 +12,32 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
 
-/**Command used to view all vehicles in the rental system
- * Argument flag '-booked' used in combination to filter vehicle search by those that have active bookings
- * @author Liam
+/**
+ * Command used to view all vehicles in the rental system.
+ * Optional arguments: -employee Used to filter vehicle search to only those that have active bookings.
+ *
+ * @author Liam, Callan.
  */
 public class ViewVehiclesCommandEmployee implements Command {
 
     @Override
     public void execute(LinkedHashMap<String, String> args) {
-        try {
-            Postgres postgres = new Postgres();
-            boolean bookedOnly = args.containsKey("booked");
-            if (bookedOnly) {
+        try (Postgres postgres = new Postgres()) {
+            if (args.containsKey("booked")) {
                 showBookedVehicles(postgres.getConnection());
-
             } else {
                 showAllVehicles(postgres.getConnection());
             }
-            postgres.getConnection().close();
         } catch (SQLException e) {
             System.out.print("Error connecting to database, search aborted.");
         }
     }
 
     /**
-     * Function outputting all vehicles on database associated information.
-     * @param connection
-     * @throws SQLException
+     * Shows all vehicles on database.
+     *
+     * @param connection The Postgres connection to execute command on.
+     * @throws SQLException Database errors.
      */
     public void showAllVehicles(Connection connection) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM vehicle");
@@ -53,9 +52,10 @@ public class ViewVehiclesCommandEmployee implements Command {
     }
 
     /**
-     * Function shows all vehicles on database with join to associated booking information.
-     * @param connection
-     * @throws SQLException
+     * Shows all vehicles on database with join to associated booking information (Only shows booked vehicles).
+     *
+     * @param connection The Postgres connection to execute command on.
+     * @throws SQLException Database errors.
      */
     public void showBookedVehicles(Connection connection) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("select vehicle.vehicle_id, vehicle.reg, vehicle.make, vehicle.model, booking.customer_id, booking.datefrom, booking.dateto FROM vehicle INNER JOIN booking ON booking.vehicle_id = vehicle.vehicle_id ORDER BY vehicle.vehicle_id;");
