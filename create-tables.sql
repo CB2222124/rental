@@ -54,5 +54,6 @@ CREATE TABLE IF NOT EXISTS booking (
     pickup_loc INTEGER REFERENCES location(location_id),
     dropoff_loc INTEGER REFERENCES location(location_id),
     datefrom date,
-    dateto date
+    dateto date,
+    with_customer BOOLEAN
 );

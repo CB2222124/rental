@@ -37,8 +37,8 @@ public class ViewBookingsCommand implements Command {
             }
             ResultSet result = statement.executeQuery();
             if (result.isBeforeFirst()) {
-                String[] resultColumns = {"booking_id", "customer_id", "vehicle_id", "pickup_loc", "dropoff_loc", "datefrom", "dateto"};
-                String[] outputColumns = {"Booking ID", "Customer ID", "Vehicle ID", "Pickup Location ID", "Drop off Location ID", "Collection Date", "Return Date"};
+                String[] resultColumns = {"booking_id", "customer_id", "vehicle_id", "pickup_loc", "dropoff_loc", "datefrom", "dateto", "with_customer"};
+                String[] outputColumns = {"Booking ID", "Customer ID", "Vehicle ID", "Pickup Location ID", "Drop off Location ID", "Collection Date", "Return Date", "Customer Collected"};
                 new OutputFormatter().printResultSet(result, resultColumns, outputColumns);
             } else {
                 System.out.println("No active bookings for user.");

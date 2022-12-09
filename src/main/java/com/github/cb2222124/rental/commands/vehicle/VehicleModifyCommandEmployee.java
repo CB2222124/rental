@@ -13,7 +13,7 @@ import java.util.Scanner;
 /**
  * @author Rania allows employees to modify a selected vehicle
  */
-public class ModifyVehiclesCommandEmployee implements Command {
+public class VehicleModifyCommandEmployee implements Command {
     @Override
     public void execute(HashMap<String, String> args) {
 
@@ -29,10 +29,10 @@ public class ModifyVehiclesCommandEmployee implements Command {
 
                 System.out.println("Please enter vehicle ID: ");
                 int vehicleID = scanner.nextInt();
+                scanner.nextLine();
 
-
-                System.out.print("Please enter new reg:");
-                String newReg = scanner.next();
+                System.out.print("Please enter new reg: ");
+                String newReg = scanner.nextLine();
 
                 changeVehicleReg(vehicleID, newReg, postgres.getConnection());
                 System.out.println("Registration for vehicle:" + vehicleID +" updated successfully");
