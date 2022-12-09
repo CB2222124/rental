@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS employee (
     employee_id serial PRIMARY KEY,
-    username VARCHAR(25),
+    username VARCHAR(25) UNIQUE,
     password VARCHAR(25)
 );
 
@@ -27,9 +27,10 @@ CREATE TABLE IF NOT EXISTS customer (
     customer_id SERIAL PRIMARY KEY,
     firstname VARCHAR(50),
     lastname VARCHAR(50),
-    username VARCHAR(35),
-    password VARCHAR(25),
-    address_id SERIAL REFERENCES address(address_id)
+    username VARCHAR(35) UNIQUE,
+    password VARCHAR(25)
+    --address_id SERIAL REFERENCES address(address_id)
+    --Note: Ideally the entry above would be used. However it is omitted here for the sake of satisfying a MVP. Revisit.
 );
 
 CREATE TABLE IF NOT EXISTS location (
@@ -42,7 +43,6 @@ CREATE TABLE IF NOT EXISTS vehicle (
     reg VARCHAR(8),
     make VARCHAR(30),
     model VARCHAR(30),
-    available boolean,
     location_id INTEGER REFERENCES location(location_id),
     daily_fee numeric
 );
@@ -54,5 +54,6 @@ CREATE TABLE IF NOT EXISTS booking (
     pickup_loc INTEGER REFERENCES location(location_id),
     dropoff_loc INTEGER REFERENCES location(location_id),
     datefrom date,
-    dateto date
+    dateto date,
+    with_customer BOOLEAN
 );
