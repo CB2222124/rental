@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
 
+//TODO: Don't let a customer change another customers booking vehicle!
 public class BookingChangeVehicleCommand implements Command {
 
     @Override
@@ -28,6 +29,7 @@ public class BookingChangeVehicleCommand implements Command {
             } else {
                 System.out.println("""
                         Invalid operation, changing the vehicle for a booking requires the following:
+                        Specified booking ID must belong to the customer.
                         Current vehicle must not be in the customers possession.
                         New vehicle must be at the same location and available.""");
             }
