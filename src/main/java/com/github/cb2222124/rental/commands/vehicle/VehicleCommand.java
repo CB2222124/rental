@@ -21,9 +21,9 @@ public class VehicleCommand implements Command {
             }
         }
         switch (command) {
-            case "add" -> new VehicleNewCommandEmployee().execute(args);
-            case "delete" -> new VehicleRemoveCommandEmployee().execute(args);
-            case "modify" -> new VehicleModifyCommandEmployee().execute(args);
+            case "add" -> new VehicleNewCommand().execute(args);
+            case "delete" -> new VehicleRemoveCommand().execute(args);
+            case "modify" -> new VehicleModifyCommand().execute(args);
             default -> System.out.println("No valid vehicle operation argument provided (-add, -delete, -modify).");
         }
     }

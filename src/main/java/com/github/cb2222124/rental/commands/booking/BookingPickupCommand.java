@@ -8,17 +8,16 @@ import com.github.cb2222124.rental.utils.Postgres;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 /**
- * Employee command to record customer returning the vehicle.
+ * Employee command for recording a booked vehicle has been collected by the customer.
  *
  * @author Callan.
  */
-public class BookingRecordDropoffCommand implements Command {
+public class BookingPickupCommand implements Command {
 
     @Override
     public void execute(LinkedHashMap<String, String> args) {
@@ -26,9 +25,9 @@ public class BookingRecordDropoffCommand implements Command {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Enter Booking ID: ");
             if (recordPickup(scanner.nextInt(), postgres.getConnection())) {
-                System.out.println("Customer drop off recorded, booking removed.");
+                System.out.println("Booking updated, vehicle is now in customer possession.");
             } else {
-                System.out.println("Invalid booking ID, verify booking exists and that the vehicle is in customers possession.");
+                System.out.println("Specified booking is already in customer possession.");
             }
         } catch (SQLException e) {
             System.out.println("Error connecting to database, operation aborted.");
@@ -38,17 +37,16 @@ public class BookingRecordDropoffCommand implements Command {
     }
 
     /**
-     * Removes the booking as it has been completed. The vehicles location will be changed to where
-     * it was dropped off.
+     * Updates the booking record to signify vehicle is in customers possession.
      *
      * @param bookingID  The booking to update.
      * @param connection The Postgres connection to execute command on.
-     * @return Operation success (Fails if the customer doesn't have the vehicle).
+     * @return Operation success (Fails if the customer already has the vehicle).
      * @throws SQLException Database errors.
      */
     public boolean recordPickup(int bookingID, Connection connection) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(
-                "DELETE FROM booking WHERE booking_id = ? AND with_customer = 'true'");
+                "UPDATE booking SET with_customer = 'true' WHERE booking_id = ?");
         statement.setInt(1, bookingID);
         return statement.executeUpdate() != 0;
     }
@@ -60,6 +58,6 @@ public class BookingRecordDropoffCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "Record customer has dropped off vehicle for booking.";
+        return "Record customer has picked up vehicle for booking.";
     }
 }

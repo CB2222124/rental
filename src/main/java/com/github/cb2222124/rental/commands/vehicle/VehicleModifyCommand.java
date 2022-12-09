@@ -17,7 +17,7 @@ import java.util.Scanner;
  *
  * @author Rania, Callan.
  */
-public class VehicleModifyCommandEmployee implements Command {
+public class VehicleModifyCommand implements Command {
     @Override
     public void execute(LinkedHashMap<String, String> args) {
         try (Postgres postgres = new Postgres()) {
