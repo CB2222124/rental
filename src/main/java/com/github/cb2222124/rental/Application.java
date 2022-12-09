@@ -1,10 +1,7 @@
 package com.github.cb2222124.rental;
 
 import com.github.cb2222124.rental.commands.*;
-import com.github.cb2222124.rental.commands.booking.BookCommand;
-import com.github.cb2222124.rental.commands.booking.BookingRecordDropoffCommand;
-import com.github.cb2222124.rental.commands.booking.BookingRecordPickupCommand;
-import com.github.cb2222124.rental.commands.booking.ViewBookingsCommand;
+import com.github.cb2222124.rental.commands.booking.*;
 import com.github.cb2222124.rental.commands.location.ViewLocationsCommand;
 import com.github.cb2222124.rental.commands.vehicle.VehicleModifyCommandEmployee;
 import com.github.cb2222124.rental.commands.vehicle.VehicleCommand;
@@ -47,6 +44,7 @@ public class Application {
         commands.put("recordpickup", new BookingRecordPickupCommand());
         commands.put("recorddropoff", new BookingRecordDropoffCommand());
         commands.put("bookings", new ViewBookingsCommand());
+        commands.put("changev", new BookingChangeVehicleCommand());
         commands.put("cancelb", new EmployeeCancelBookingsCommand());
         commands.put("locations", new ViewLocationsCommand());
         commands.put("logout", new LogoutCommand());
