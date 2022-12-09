@@ -83,3 +83,60 @@ END IF;
 
 END;
 $$;
+CREATE FUNCTION getLocationsWithAddresses()
+RETURNS TABLE (
+    location_id integer,
+    num varchar,
+    street varchar,
+    city_code varchar,
+    country_code varchar,
+    postcode varchar
+)
+AS $$ BEGIN Return Query
+SELECT location.location_id, address.num, address.street, address.city_code, address.country_code, address.postcode
+FROM location
+INNER JOIN address ON location.address_id = address.address_id;
+END;
+$$ language plpgsql;
+
+CREATE FUNCTION locationCityCountryCodeSearch(input_city_code varchar, input_country_code varchar)
+RETURNS TABLE (
+    location_id integer,
+    num varchar,
+    street varchar,
+    city_code varchar,
+    country_code varchar,
+    postcode varchar
+)
+AS $$ BEGIN Return Query
+SELECT
+    *
+FROM
+    getLocationsWithAddresses() location
+WHERE
+    (location.city_code = input_city_code OR input_city_code = '')
+    AND (location.country_code = input_country_code OR input_country_code = '');
+END;
+$$ language plpgsql;
+
+CREATE FUNCTION addBooking(input_customer_id integer, input_vehicle_id integer, input_dropoff integer, input_date_from date, input_date_to date)
+RETURNS VOID
+AS $$ BEGIN
+INSERT INTO booking (
+    customer_id,
+    vehicle_id,
+    pickup_loc,
+    dropoff_loc,
+    datefrom,
+    dateto
+)
+VALUES (
+    input_customer_id,
+    input_vehicle_id,
+    (SELECT location_id FROM vehicle WHERE vehicle_id = input_vehicle_id),
+    input_dropoff,
+    input_date_from,
+    input_date_to
+);
+END;
+$$ language plpgsql;

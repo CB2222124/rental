@@ -62,7 +62,7 @@ public class VehicleCommand implements Command {
                               Connection connection) throws SQLException {
 
         PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO vehicle (reg, make, model, location_id, daily_fee) VALUES (?,?,?,?,?,?)");
+                "INSERT INTO vehicle (reg, make, model, location_id, daily_fee) VALUES (?,?,?,?,?)");
 
         statement.setString(1, reg);
         statement.setString(2, make);
