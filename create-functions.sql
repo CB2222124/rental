@@ -35,6 +35,54 @@ WHERE
 END;
 $$ language plpgsql;
 
+/*
+@author Rania, following function allows employees to update a vehicle reg only if it exists
+
+*/
+
+CREATE FUNCTION updateReg(newReg VARCHAR, vehicle_idToLook INTEGER)
+RETURNS
+		VOID
+LANGUAGE PLPGSQL
+AS
+$$
+DECLARE
+
+BEGIN
+	IF EXISTS(
+	SELECT vehicle_id FROM vehicle WHERE vehicle_id = vehicle_idToLook)
+	THEN
+UPDATE vehicle
+SET reg = newReg WHERE vehicle.vehicle_id = vehicle_idToLook;
+
+ELSE
+	RAISE 'Oops looks like vehicle % does not exist', vehicle_idToLook;
+END IF;
+
+END;
+$$;
+
+CREATE FUNCTION updateDailyPrice(newDailyFee DOUBLE PRECISION, vehicle_idToLook INTEGER)
+    RETURNS
+        VOID
+    LANGUAGE PLPGSQL
+AS
+$$
+DECLARE
+
+BEGIN
+	IF EXISTS(
+	SELECT vehicle_id FROM vehicle WHERE vehicle_id = vehicle_idToLook)
+	THEN
+UPDATE vehicle
+SET daily_fee = newDailyFee WHERE vehicle.vehicle_id = vehicle_idToLook;
+
+ELSE
+	RAISE 'Oops looks like vehicle % does not exist', vehicle_idToLook;
+END IF;
+
+END;
+$$;
 CREATE FUNCTION getLocationsWithAddresses()
 RETURNS TABLE (
     location_id integer,
@@ -64,10 +112,10 @@ AS $$ BEGIN Return Query
 SELECT
     *
 FROM
-    getLocationsWithAddresses() l
+    getLocationsWithAddresses() location
 WHERE
-    (l.city_code = input_city_code OR input_city_code = '')
-    AND (l.country_code = input_country_code OR input_country_code = '');
+    (location.city_code = input_city_code OR input_city_code = '')
+    AND (location.country_code = input_country_code OR input_country_code = '');
 END;
 $$ language plpgsql;
 
@@ -75,18 +123,20 @@ CREATE FUNCTION addBooking(input_customer_id integer, input_vehicle_id integer, 
 RETURNS VOID
 AS $$ BEGIN
 INSERT INTO booking (
-customer_id,
-vehicle_id,
-pickup_loc,
-dropoff_loc,
-datefrom,
-dateto)
+    customer_id,
+    vehicle_id,
+    pickup_loc,
+    dropoff_loc,
+    datefrom,
+    dateto
+)
 VALUES (
-input_customer_id,
-input_vehicle_id,
-(SELECT location_id FROM vehicle WHERE vehicle_id = input_vehicle_id),
-input_dropoff,
-input_date_from,
-input_date_to);
+    input_customer_id,
+    input_vehicle_id,
+    (SELECT location_id FROM vehicle WHERE vehicle_id = input_vehicle_id),
+    input_dropoff,
+    input_date_from,
+    input_date_to
+);
 END;
 $$ language plpgsql;
