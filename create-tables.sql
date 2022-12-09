@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS customer (
     firstname VARCHAR(50),
     lastname VARCHAR(50),
     username VARCHAR(35) UNIQUE,
-    password VARCHAR(25),
+    password VARCHAR(25)
     --address_id SERIAL REFERENCES address(address_id)
     --Note: Ideally the entry above would be used. However it is omitted here for the sake of satisfying a MVP. Revisit.
 );

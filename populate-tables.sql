@@ -20,8 +20,8 @@ insert into address (num, street, city_code, country_code, postcode) values (123
 
 --insert into customer (firstname, lastname, username, password, address_id) values ('Jamila', 'Jones', 'user101', 'letmein', 4);
 --insert into customer (firstname, lastname, username, password, address_id) values ('Barney', 'Rubble', 'BRubble101', 'sticksnstones', 5);
-insert into customer (firstname, lastname, username, password, address_id) values ('Jamila', 'Jones', 'user101', 'letmein');
-insert into customer (firstname, lastname, username, password, address_id) values ('Barney', 'Rubble', 'BRubble101', 'sticksnstones');
+insert into customer (firstname, lastname, username, password) values ('Jamila', 'Jones', 'user101', 'letmein');
+insert into customer (firstname, lastname, username, password) values ('Barney', 'Rubble', 'BRubble101', 'sticksnstones');
 
 
 insert into location (address_id) values (1);
