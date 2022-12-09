@@ -6,6 +6,8 @@ package docker;
 
 /**
  * Unused: Experimented trying to spin up the docker container automatically before conducting tests.
+ * In future develop this further or consider Testcontainers for java, pgTAP etc.
+ *
  * @author Callan
  */
 public class ContainerTest {
