@@ -22,12 +22,13 @@ public class CancelBookingCommandCustomer implements Command {
             System.out.println("Please enter booking ID you would like to cancel");
             int bookingIdToCancel = Integer.parseInt(scanner.nextLine());
 
-            System.out.println("Are you sure you want to cancel booking: " + bookingIdToCancel + " ?");
+            System.out.println("Are you sure you want to cancel booking: " + bookingIdToCancel + " ? Enter 'Yes' or 'No'");
             String confirmation = scanner.nextLine();
             if (confirmation.equalsIgnoreCase("Yes")){
 
             cancelBookingAsCustomer(bookingIdToCancel, postgres.getConnection());
                 postgres.getConnection().close();
+                System.out.println("Booking Cancelled");
             }
             else {
                 System.out.println("Cancellation not complete");
