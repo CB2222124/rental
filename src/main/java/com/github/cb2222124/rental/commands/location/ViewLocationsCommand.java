@@ -6,8 +6,11 @@ import com.github.cb2222124.rental.models.Role;
 import com.github.cb2222124.rental.utils.OutputFormatter;
 import com.github.cb2222124.rental.utils.Postgres;
 
-import java.sql.*;
-import java.util.HashMap;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedHashMap;
 import java.util.NoSuchElementException;
 
 /**
@@ -16,7 +19,7 @@ import java.util.NoSuchElementException;
 public class ViewLocationsCommand implements Command {
 
     @Override
-    public void execute(HashMap<String, String> args) {
+    public void execute(LinkedHashMap<String, String> args) {
         try (Postgres postgres = new Postgres()){
             showLocations(postgres.getConnection());
         } catch (SQLException e) {

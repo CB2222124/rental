@@ -8,6 +8,7 @@ import com.github.cb2222124.rental.utils.Postgres;
 
 import java.sql.*;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -18,7 +19,7 @@ public class ViewVehiclesCommandCustomer implements Command {
 
 
     @Override
-    public void execute(HashMap<String, String> args) {
+    public void execute(LinkedHashMap<String, String> args) {
 
         try {
             Postgres postgres = new Postgres();

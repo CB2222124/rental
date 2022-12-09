@@ -9,7 +9,7 @@ import com.github.cb2222124.rental.utils.Postgres;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.NoSuchElementException;
 
 /**
@@ -21,7 +21,7 @@ import java.util.NoSuchElementException;
  */
 public class ViewBookingsCommand implements Command {
     @Override
-    public void execute(HashMap<String, String> args) {
+    public void execute(LinkedHashMap<String, String> args) {
         try {
             Postgres postgres = new Postgres();
             PreparedStatement statement;

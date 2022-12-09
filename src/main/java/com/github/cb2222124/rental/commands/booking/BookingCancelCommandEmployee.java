@@ -1,4 +1,4 @@
-package com.github.cb2222124.rental.commands;
+package com.github.cb2222124.rental.commands.booking;
 
 import com.github.cb2222124.rental.Application;
 import com.github.cb2222124.rental.models.Command;
@@ -7,10 +7,9 @@ import com.github.cb2222124.rental.utils.Postgres;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 
@@ -18,10 +17,10 @@ import java.util.Scanner;
  * Command used to cancel an active booking as an Employee
  * @author Liam
  */
-public class EmployeeCancelBookingsCommand implements Command {
+public class BookingCancelCommandEmployee implements Command {
 
     @Override
-    public void execute(HashMap<String, String> args) {
+    public void execute(LinkedHashMap<String, String> args) {
         Scanner scanner = new Scanner(System.in);
         try {
             Postgres postgres = new Postgres();

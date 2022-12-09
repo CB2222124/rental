@@ -14,7 +14,7 @@ import java.util.*;
 public class ListCommand implements Command {
 
     @Override
-    public void execute(HashMap<String, String> args) {
+    public void execute(LinkedHashMap<String, String> args) {
         List<List<String>> table = new ArrayList<>();
         for (Map.Entry<String, Command> command : Application.commands.entrySet()) {
             if(!command.getValue().isAvailable()) continue;

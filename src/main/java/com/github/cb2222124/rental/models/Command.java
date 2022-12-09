@@ -1,6 +1,7 @@
 package com.github.cb2222124.rental.models;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Interface used to specify the behavior commands must implement.
@@ -8,7 +9,7 @@ import java.util.HashMap;
  * @author Callan.
  */
 public interface Command {
-    void execute(HashMap<String, String> args);
+    void execute(LinkedHashMap<String, String> args);
 
     boolean isAvailable();
 
