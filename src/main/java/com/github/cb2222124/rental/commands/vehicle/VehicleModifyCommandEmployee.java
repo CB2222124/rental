@@ -93,6 +93,6 @@ public class VehicleModifyCommandEmployee implements Command {
 
     @Override
     public String getDescription() {
-        return "Modify vehicle must specify arguments";
+        return "Modify vehicle with specified operations.";
     }
 }

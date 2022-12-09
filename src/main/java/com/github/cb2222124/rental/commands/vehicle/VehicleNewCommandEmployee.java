@@ -1,6 +1,8 @@
 package com.github.cb2222124.rental.commands.vehicle;
 
+import com.github.cb2222124.rental.Application;
 import com.github.cb2222124.rental.models.Command;
+import com.github.cb2222124.rental.models.Role;
 import com.github.cb2222124.rental.utils.Postgres;
 
 import java.sql.Connection;
@@ -52,11 +54,11 @@ public class VehicleNewCommandEmployee implements Command {
 
     @Override
     public boolean isAvailable() {
-        return false;
+        return Application.user.getRole() == Role.EMPLOYEE;
     }
 
     @Override
     public String getDescription() {
-        return null;
+        return "Add a new vehicle.";
     }
 }
