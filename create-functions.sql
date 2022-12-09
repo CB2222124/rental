@@ -70,3 +70,23 @@ WHERE
     AND (l.country_code = input_country_code OR input_country_code = '');
 END;
 $$ language plpgsql;
+
+CREATE FUNCTION addBooking(input_customer_id integer, input_vehicle_id integer, input_dropoff integer, input_date_from date, input_date_to date)
+RETURNS VOID
+AS $$ BEGIN
+INSERT INTO booking (
+customer_id,
+vehicle_id,
+pickup_loc,
+dropoff_loc,
+datefrom,
+dateto)
+VALUES (
+input_customer_id,
+input_vehicle_id,
+(SELECT location_id FROM vehicle WHERE vehicle_id = input_vehicle_id),
+input_dropoff,
+input_date_from,
+input_date_to);
+END;
+$$ language plpgsql;
