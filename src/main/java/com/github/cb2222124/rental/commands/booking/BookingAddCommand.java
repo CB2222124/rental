@@ -18,7 +18,7 @@ import java.util.Date;
  *
  * @author Callan.
  */
-public class BookCommand implements Command {
+public class BookingAddCommand implements Command {
     @Override
     public void execute(LinkedHashMap<String, String> args) {
         try (Postgres postgres = new Postgres()) {
@@ -49,7 +49,7 @@ public class BookCommand implements Command {
 
             //Confirm user action (Not particularly important now, but would be in a deployed application with processed payments).
             System.out.print("Type 'confirm' to confirm booking, all other inputs will abort operation: ");
-            if (scanner.next().equals("confirm")) {
+            if (scanner.nextLine().equals("confirm")) {
                 addBooking(vehicleID, dropoffID, java.sql.Date.valueOf(pickupDate),
                         java.sql.Date.valueOf(dropoffDate), postgres.getConnection());
                 System.out.println("Booking successful! View your active bookings using the 'bookings' command.");

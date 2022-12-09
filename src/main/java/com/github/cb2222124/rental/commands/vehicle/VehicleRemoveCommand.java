@@ -13,6 +13,8 @@ import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 /**
+ * Command to remove a specified vehicle.
+ *
  * @author Saeed, Callan.
  */
 public class VehicleRemoveCommand implements Command {
@@ -34,6 +36,14 @@ public class VehicleRemoveCommand implements Command {
         }
     }
 
+    /**
+     * Delete a specified vehicle.
+     *
+     * @param id         The vehicle to be deleted.
+     * @param connection The Postgres connection to execute command on.
+     * @return Operation success. True if a vehicle has been deleted, false otherwise.
+     * @throws SQLException Database errors.
+     */
     public boolean deleteVehicle(int id, Connection connection) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(
                 "DELETE FROM vehicle WHERE vehicle_id = ?");

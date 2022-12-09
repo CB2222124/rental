@@ -13,6 +13,8 @@ import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 /**
+ * Command to add a new vehicle.
+ *
  * @author Rania.
  */
 public class VehicleNewCommand implements Command {
@@ -40,6 +42,17 @@ public class VehicleNewCommand implements Command {
         }
     }
 
+    /**
+     * Adds a new vehicle with the specified information.
+     *
+     * @param reg        Vehicle registration.
+     * @param make       Vehicle make.
+     * @param model      Vehicle model.
+     * @param locationID Location.
+     * @param dailyFee   Vehicle daily fee.
+     * @param connection The Postgres connection to execute command on.
+     * @throws SQLException Database errors.
+     */
     public void addNewVehicle(String reg, String make, String model, int locationID, double dailyFee,
                               Connection connection) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(

@@ -11,7 +11,11 @@ import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
 
-//TODO: Don't let a customer change another customers booking vehicle!
+/**
+ * Command to change the vehicle for a booking.
+ *
+ * @author Callan.
+ */
 public class BookingChangeVehicleCommand implements Command {
 
     @Override
@@ -38,6 +42,18 @@ public class BookingChangeVehicleCommand implements Command {
         }
     }
 
+    /**
+     * Changes the vehicle for a booking provided:
+     * The old vehicle is not in the customers' possession.
+     * The new vehicle is available and at the same location.
+     * TODO: The booking belongs to the active user.
+     *
+     * @param bookingID  The booking ID.
+     * @param vehicleID  The new vehicle.
+     * @param connection The Postgres connection to execute command on.
+     * @return Operation success.
+     * @throws SQLException Database errors.
+     */
     private boolean changeVehicle(int bookingID, int vehicleID, Connection connection) throws SQLException {
         CallableStatement statement = connection.prepareCall("{call updateBookingVehicle(?,?)}");
         statement.setInt(1, bookingID);

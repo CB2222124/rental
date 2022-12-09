@@ -14,6 +14,8 @@ import java.util.Scanner;
 
 /**
  * Employee command to modify a specified vehicle.
+ * Arguments: -reg Modify vehicle reg.
+ * -fee Modify vehicle daily fee.
  *
  * @author Rania, Callan.
  */

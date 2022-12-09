@@ -24,7 +24,7 @@ public class BookingCancelCommandCustomer implements Command {
         try (Postgres postgres = new Postgres()) {
             Scanner scanner = new Scanner(System.in);
 
-            System.out.println("Enter Booking ID: ");
+            System.out.print("Enter Booking ID: ");
             int bookingIdToCancel = scanner.nextInt();
             scanner.nextLine();
 
@@ -43,6 +43,13 @@ public class BookingCancelCommandCustomer implements Command {
         }
     }
 
+    /**
+     * Cancels the booking for a customer provided they do not have the vehicle yet.
+     *
+     * @param bookingIdToCancel The booking to cancel.
+     * @param connection The Postgres connection to execute command on.
+     * @throws SQLException Database errors.
+     */
     public void cancelBookingAsCustomer(int bookingIdToCancel, Connection connection) throws SQLException {
         CallableStatement statement = connection.prepareCall("{call cancel_booking_c(?,?)}");
         statement.setInt(1, bookingIdToCancel);
@@ -58,6 +65,6 @@ public class BookingCancelCommandCustomer implements Command {
 
     @Override
     public String getDescription() {
-        return "Cancel booking as customer";
+        return "Cancel specified booking.";
     }
 }

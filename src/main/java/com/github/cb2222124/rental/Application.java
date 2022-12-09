@@ -1,14 +1,9 @@
 package com.github.cb2222124.rental;
 
 import com.github.cb2222124.rental.commands.*;
-import com.github.cb2222124.rental.commands.booking.*;
-import com.github.cb2222124.rental.commands.booking.BookCommand;
-import com.github.cb2222124.rental.commands.booking.BookingCancelCommandCustomer;
-import com.github.cb2222124.rental.commands.booking.BookingDropoffCommand;
-import com.github.cb2222124.rental.commands.booking.BookingPickupCommand;
+import com.github.cb2222124.rental.commands.booking.BookingCommand;
 import com.github.cb2222124.rental.commands.booking.ViewBookingsCommand;
 import com.github.cb2222124.rental.commands.location.ViewLocationsCommand;
-import com.github.cb2222124.rental.commands.vehicle.VehicleModifyCommand;
 import com.github.cb2222124.rental.commands.vehicle.VehicleCommand;
 import com.github.cb2222124.rental.commands.vehicle.ViewVehiclesCommand;
 import com.github.cb2222124.rental.models.Command;
@@ -42,16 +37,13 @@ public class Application {
     private static void registerCommands() {
         commands.put("register", new RegisterCommand());
         commands.put("login", new LoginCommand());
+
+        commands.put("bookings", new ViewBookingsCommand());
+        commands.put("booking", new BookingCommand());
+
         commands.put("vehicles", new ViewVehiclesCommand());
         commands.put("vehicle", new VehicleCommand());
-        commands.put("modify", new VehicleModifyCommand());
-        commands.put("book", new BookCommand());
-        commands.put("recordpickup", new BookingPickupCommand());
-        commands.put("recorddropoff", new BookingDropoffCommand());
-        commands.put("bookings", new ViewBookingsCommand());
-        commands.put("changev", new BookingChangeVehicleCommand());
-        commands.put("cancel", new BookingCancelCommandCustomer());
-        commands.put("cancelb", new BookingCancelCommandEmployee());
+
         commands.put("locations", new ViewLocationsCommand());
         commands.put("logout", new LogoutCommand());
         commands.put("commands", new ListCommand());

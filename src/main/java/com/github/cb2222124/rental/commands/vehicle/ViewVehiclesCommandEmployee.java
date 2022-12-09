@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 
 /**
  * Command used to view all vehicles in the rental system.
- * Optional arguments: -employee Used to filter vehicle search to only those that have active bookings.
+ * Optional arguments: -booked Used to filter vehicle search to only those that have active bookings.
  *
  * @author Liam, Callan.
  */

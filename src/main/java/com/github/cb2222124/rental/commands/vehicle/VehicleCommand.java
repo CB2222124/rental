@@ -7,6 +7,11 @@ import com.github.cb2222124.rental.models.Role;
 import java.util.LinkedHashMap;
 
 /**
+ * Parent command to run vehicle sub commands.
+ * Arguments: -add New vehicle command.
+ * -delete Delete vehicle command.
+ * -modify Modify vehicle command.
+ *
  * @author Callan.
  */
 public class VehicleCommand implements Command {
