@@ -14,19 +14,28 @@ import java.util.LinkedHashMap;
 import java.util.NoSuchElementException;
 
 /**
+ * Command to view all rental locations.
+ *
  * @author Callan
  */
 public class ViewLocationsCommand implements Command {
 
     @Override
     public void execute(LinkedHashMap<String, String> args) {
-        try (Postgres postgres = new Postgres()){
+        try (Postgres postgres = new Postgres()) {
             showLocations(postgres.getConnection());
         } catch (SQLException e) {
             System.out.print("Error connecting to database, location search aborted.");
         }
     }
 
+    /**
+     * Outputs a table constructed from a location, and it's associated address.
+     *
+     * @param connection The Postgres connection to execute command on.
+     * @throws SQLException           Database errors.
+     * @throws NoSuchElementException No locations were found.
+     */
     private void showLocations(Connection connection) throws SQLException, NoSuchElementException {
         CallableStatement statement = connection.prepareCall("{call getLocationsWithAddresses()}");
         ResultSet result = statement.executeQuery();

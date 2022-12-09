@@ -14,58 +14,44 @@ import java.util.Scanner;
 
 
 /**
- * Command used to cancel an active booking as an Employee
- * @author Liam
+ * Command used to cancel an active booking as an Employee.
+ *
+ * @author Liam.
  */
 public class BookingCancelCommandEmployee implements Command {
 
     @Override
     public void execute(LinkedHashMap<String, String> args) {
-        Scanner scanner = new Scanner(System.in);
-        try {
-            Postgres postgres = new Postgres();
-            // reads in '-cancellation' argument
-            boolean cancelBooking = args.containsKey("cancellation");
-            if (cancelBooking) {
-                // accepts Booking ID for cancellation
-                System.out.println("Enter Booking ID for Cancellation: ");
-                int bookingIDCancel = scanner.nextInt();
-                confirmCancellation(bookingIDCancel, postgres.getConnection());
-            } else {
-                System.out.println("Try -cancellation command, to cancel a booking.");
-            }
-            postgres.getConnection().close();
+        try (Postgres postgres = new Postgres()) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Enter Booking ID: ");
+            int bookingIDCancel = scanner.nextInt();
+            confirmCancellation(bookingIDCancel, postgres.getConnection());
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Database error (" + e.getMessage() + "), operation aborted.");
         } catch (InputMismatchException e) {
             System.out.println("Invalid input, operation aborted.");
         }
-
     }
 
     /**
-     * Function that removes booking from database
-     * <p>
-     * Function takes user input of booking_id and calls SQL function to see if booking is present,
-     * if booking is present, user is asked to confirm cancellation request.
-     * If booking_id is not present user is notified.
+     * Employee function to remove a booking provided it is present.
      *
-     * @param bookingID
-     * @param connection
-     * @throws SQLException
+     * @param bookingID  The booking to cancel.
+     * @param connection The Postgres connection to execute command on.
+     * @throws SQLException Database errors.
      */
     public void confirmCancellation(int bookingID, Connection connection) throws SQLException {
         Scanner scanner = new Scanner(System.in);
-        CallableStatement statement = connection.prepareCall("{call cancel_booking_e(?)}");
-        statement.setInt(1, bookingID);
-        System.out.printf("Enter 'yes' to confirm cancellation of Booking ID %d: ", bookingID);
+        System.out.print("Type 'confirm' to confirm cancellation, all other inputs will abort operation: ");
         String confirmation = scanner.nextLine();
-        //confirms request with 'yes', then executes SQL update statement
-        if (confirmation.equalsIgnoreCase("yes")) {
+        if (confirmation.equalsIgnoreCase("confirm")) {
+            CallableStatement statement = connection.prepareCall("{call cancel_booking_e(?)}");
+            statement.setInt(1, bookingID);
             statement.executeUpdate();
-            System.out.print("Cancellation confirmed.");
+            System.out.print("Cancellation success.");
         } else {
-            System.out.println("Cancellation aborted.");
+            System.out.println("Cancellation failure.");
         }
     }
 
@@ -77,7 +63,9 @@ public class BookingCancelCommandEmployee implements Command {
 
 
     @Override
-    public String getDescription() { return "Cancel a booking."; }
+    public String getDescription() {
+        return "Cancel specified booking.";
+    }
 }
 
 

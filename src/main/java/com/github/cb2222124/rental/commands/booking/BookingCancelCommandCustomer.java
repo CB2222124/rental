@@ -8,42 +8,52 @@ import com.github.cb2222124.rental.utils.Postgres;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
 
+/**
+ * Command to cancel a booking as a customer.
+ *
+ * @author Rania, Callan.
+ */
 public class BookingCancelCommandCustomer implements Command {
     @Override
     public void execute(LinkedHashMap<String, String> args) {
 
-        try{
-            Postgres postgres = new Postgres();
+        try (Postgres postgres = new Postgres()) {
             Scanner scanner = new Scanner(System.in);
 
-            System.out.println("Please enter booking ID you would like to cancel");
-            int bookingIdToCancel = Integer.parseInt(scanner.nextLine());
+            System.out.print("Enter Booking ID: ");
+            int bookingIdToCancel = scanner.nextInt();
+            scanner.nextLine();
 
-            System.out.println("Are you sure you want to cancel booking: " + bookingIdToCancel + " ? Enter 'Yes' or 'No'");
+            System.out.print("Type 'confirm' to confirm cancellation, all other inputs will abort operation: ");
             String confirmation = scanner.nextLine();
-            if (confirmation.equalsIgnoreCase("Yes")){
-
-            cancelBookingAsCustomer(bookingIdToCancel, postgres.getConnection());
-                postgres.getConnection().close();
-                System.out.println("Booking Cancelled");
+            if (confirmation.equals("confirm")) {
+                cancelBookingAsCustomer(bookingIdToCancel, postgres.getConnection());
+                System.out.println("Operation success, booking cancelled.");
+            } else {
+                System.out.println("Cancellation operation aborted by user.");
             }
-            else {
-                System.out.println("Cancellation not complete");
-            }
-        }catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Database error (" + e.getMessage() + "), booking operation aborted.");
+        } catch (InputMismatchException e) {
+            System.out.println("Bad user input, cancellation operation aborted.");
         }
-
     }
 
-    public void cancelBookingAsCustomer(int bookingIdToCancel, Connection connection)throws SQLException {
+    /**
+     * Cancels the booking for a customer provided they do not have the vehicle yet.
+     *
+     * @param bookingIdToCancel The booking to cancel.
+     * @param connection The Postgres connection to execute command on.
+     * @throws SQLException Database errors.
+     */
+    public void cancelBookingAsCustomer(int bookingIdToCancel, Connection connection) throws SQLException {
         CallableStatement statement = connection.prepareCall("{call cancel_booking_c(?,?)}");
-        statement.setInt(1,bookingIdToCancel);
-        statement.setInt(2,Application.user.getID());
+        statement.setInt(1, bookingIdToCancel);
+        statement.setInt(2, Application.user.getID());
         statement.executeUpdate();
 
     }
@@ -55,6 +65,6 @@ public class BookingCancelCommandCustomer implements Command {
 
     @Override
     public String getDescription() {
-        return "Cancel booking as customer";
+        return "Cancel specified booking.";
     }
 }

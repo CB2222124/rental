@@ -23,16 +23,18 @@ public class LoginCommand implements Command {
 
     @Override
     public void execute(LinkedHashMap<String, String> args) {
+        //Take user input.
         Scanner scanner = new Scanner(System.in);
         System.out.print("Username: ");
         String username = scanner.nextLine();
         System.out.print("Password: ");
         String password = scanner.nextLine();
 
+        //Evaluate login type.
         boolean employeeLogin = args.containsKey("employee");
 
-        try {
-            Postgres postgres = new Postgres();
+        //Attempt appropriate login type and handle results.
+        try (Postgres postgres = new Postgres()) {
             if (employeeLogin) {
                 try {
                     int id = login("employee", username, password, postgres.getConnection());
@@ -51,12 +53,22 @@ public class LoginCommand implements Command {
                     System.out.println("Attempting to access an employee account? Try 'login -employee'.");
                 }
             }
-            postgres.getConnection().close();
         } catch (SQLException e) {
             System.out.println("Error connecting to database, login aborted.");
         }
     }
 
+    /**
+     * Returns the ID associated with the provided user information.
+     *
+     * @param table      The table to search for user (Customer or Employee).
+     * @param username   Username.
+     * @param password   Password.
+     * @param connection The Postgres connection to execute command on.
+     * @return The ID found.
+     * @throws SQLException           Database errors.
+     * @throws NoSuchElementException No results found with provided information.
+     */
     public int login(String table, String username, String password, Connection connection)
             throws SQLException, NoSuchElementException {
         PreparedStatement statement = connection.prepareStatement(

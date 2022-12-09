@@ -13,7 +13,6 @@ import java.util.Scanner;
 
 /**
  * Command used to register a customer account.
- * TODO: Implement.
  *
  * @author Callan.
  */
@@ -21,9 +20,8 @@ public class RegisterCommand implements Command {
 
     @Override
     public void execute(LinkedHashMap<String, String> args) {
-
-        try {
-            Postgres postgres = new Postgres();
+        try (Postgres postgres = new Postgres()) {
+            //Take user input.
             Scanner scanner = new Scanner(System.in);
             System.out.print("First Name: ");
             String firstname = scanner.nextLine();
@@ -33,24 +31,34 @@ public class RegisterCommand implements Command {
             String username = scanner.nextLine();
             System.out.print("Password: ");
             String password = scanner.nextLine();
+
+            //Basic sanity checks.
             if (username.isBlank() || password.isBlank()) {
                 System.out.println("Username and password cannot be blank, customer registration aborted.");
             } else {
                 addNewCustomer(firstname, lastname, username, password, postgres.getConnection());
                 System.out.println("Customer account '" + username + "' created, please login.");
             }
-            postgres.getConnection().close();
         } catch (SQLException e) {
             System.out.println("Database error (" + e.getMessage() + "), customer registration aborted.");
         }
     }
 
+    /**
+     * Adds a new entry to customer table with provided arguments, provided a customer with the same
+     * username does not already exist.
+     *
+     * @param firstname  Customer First Name.
+     * @param lastname   Customer Last Name.
+     * @param username   Customer Username.
+     * @param password   Customer Password.
+     * @param connection The Postgres connection to execute command on.
+     * @throws SQLException Database errors (Including UNIQUE constraint enforced on username column).
+     */
     public void addNewCustomer(String firstname, String lastname, String username, String password,
                                Connection connection) throws SQLException {
-
         PreparedStatement statement = connection.prepareStatement(
                 "INSERT INTO customer (firstname, lastname, username, password) VALUES (?,?,?,?)");
-
         statement.setString(1, firstname);
         statement.setString(2, lastname);
         statement.setString(3, username);
