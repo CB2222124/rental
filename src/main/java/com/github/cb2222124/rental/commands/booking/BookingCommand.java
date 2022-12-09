@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
  * -change Change booking command.
  * -pickup Record customer pickup command.
  * -dropoff Record customer dropoff command.
- * TODO: Refactor construction of sub commands in the future.
+ * Note: Refactor construction of sub commands in the future.
  *
  * @author Callan.
  */
