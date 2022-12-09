@@ -2,7 +2,7 @@ package com.github.cb2222124.rental.commands;
 
 import com.github.cb2222124.rental.models.Command;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Command used to exit the application.
@@ -11,7 +11,7 @@ import java.util.HashMap;
  */
 public class ExitCommand implements Command {
     @Override
-    public void execute(HashMap<String, String> args) {
+    public void execute(LinkedHashMap<String, String> args) {
         System.exit(0);
     }
 

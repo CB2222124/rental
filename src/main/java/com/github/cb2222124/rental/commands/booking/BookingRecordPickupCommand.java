@@ -8,14 +8,14 @@ import com.github.cb2222124.rental.utils.Postgres;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 public class BookingRecordPickupCommand implements Command {
 
     @Override
-    public void execute(HashMap<String, String> args) {
+    public void execute(LinkedHashMap<String, String> args) {
         try (Postgres postgres = new Postgres()) {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Enter Booking ID: ");

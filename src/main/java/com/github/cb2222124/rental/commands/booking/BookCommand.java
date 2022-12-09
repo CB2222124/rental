@@ -15,7 +15,7 @@ import java.util.Date;
 
 public class BookCommand implements Command {
     @Override
-    public void execute(HashMap<String, String> args) {
+    public void execute(LinkedHashMap<String, String> args) {
         try (Postgres postgres = new Postgres()) {
 
             Scanner scanner = new Scanner(System.in);

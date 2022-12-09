@@ -1,7 +1,7 @@
 package com.github.cb2222124.rental.utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,9 +33,9 @@ public class CommandParser {
      * @param string The string to be evaluated.
      * @return A hashmap of arguments. See above example.
      */
-    public HashMap<String, String> getArguments(String string) {
+    public LinkedHashMap<String, String> getArguments(String string) {
         List<String> tokens = getTokens(string);
-        HashMap<String, String> arguments = new HashMap<>();
+        LinkedHashMap<String, String> arguments = new LinkedHashMap<>();
         boolean valueNext = false;
         for (int i = 1; i < tokens.size(); i++) {
             if (tokens.get(i).startsWith("-")) {
@@ -47,7 +47,6 @@ public class CommandParser {
             }
         }
         return arguments;
-
     }
 
     /**

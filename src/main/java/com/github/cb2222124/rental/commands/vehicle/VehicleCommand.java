@@ -7,10 +7,9 @@ import com.github.cb2222124.rental.utils.Postgres;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 /**
@@ -19,7 +18,7 @@ import java.util.Scanner;
 public class VehicleCommand implements Command {
 
     @Override
-    public void execute(HashMap<String, String> args) {
+    public void execute(LinkedHashMap<String, String> args) {
 
         try {
             Postgres postgres = new Postgres();
@@ -60,10 +59,8 @@ public class VehicleCommand implements Command {
 
     public void addNewVehicle(String reg, String make, String model, int locationID, double dailyFee,
                               Connection connection) throws SQLException {
-
         PreparedStatement statement = connection.prepareStatement(
                 "INSERT INTO vehicle (reg, make, model, location_id, daily_fee) VALUES (?,?,?,?,?)");
-
         statement.setString(1, reg);
         statement.setString(2, make);
         statement.setString(3, model);

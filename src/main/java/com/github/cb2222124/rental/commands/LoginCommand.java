@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -22,7 +22,7 @@ import java.util.Scanner;
 public class LoginCommand implements Command {
 
     @Override
-    public void execute(HashMap<String, String> args) {
+    public void execute(LinkedHashMap<String, String> args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Username: ");
         String username = scanner.nextLine();

@@ -8,6 +8,7 @@ import com.github.cb2222124.rental.utils.Postgres;
 
 import java.sql.*;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Scanner;
  */
 public class VehicleModifyCommandEmployee implements Command {
     @Override
-    public void execute(HashMap<String, String> args) {
+    public void execute(LinkedHashMap<String, String> args) {
 
         try{
             if(args.isEmpty()){

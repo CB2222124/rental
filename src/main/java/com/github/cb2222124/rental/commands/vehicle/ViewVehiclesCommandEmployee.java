@@ -10,7 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**Command used to view all vehicles in the rental system
  * Argument flag '-booked' used in combination to filter vehicle search by those that have active bookings
@@ -19,7 +19,7 @@ import java.util.HashMap;
 public class ViewVehiclesCommandEmployee implements Command {
 
     @Override
-    public void execute(HashMap<String, String> args) {
+    public void execute(LinkedHashMap<String, String> args) {
         try {
             Postgres postgres = new Postgres();
             boolean bookedOnly = args.containsKey("booked");

@@ -5,6 +5,7 @@ import com.github.cb2222124.rental.models.Command;
 import com.github.cb2222124.rental.models.Role;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * @author Callan
@@ -20,7 +21,7 @@ public class ViewVehiclesCommand implements Command {
     }
 
     @Override
-    public void execute(HashMap<String, String> args) {
+    public void execute(LinkedHashMap<String, String> args) {
         if (Application.user.getRole() == Role.EMPLOYEE) {
             employeeCommand.execute(args);
         } else {
