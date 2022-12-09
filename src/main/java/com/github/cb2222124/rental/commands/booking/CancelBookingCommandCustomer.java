@@ -27,6 +27,7 @@ public class CancelBookingCommandCustomer implements Command {
             if (confirmation.equalsIgnoreCase("Yes")){
 
             cancelBookingAsCustomer(bookingIdToCancel, postgres.getConnection());
+                postgres.getConnection().close();
             }
             else {
                 System.out.println("Cancellation not complete");

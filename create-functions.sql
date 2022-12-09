@@ -147,7 +147,7 @@ END;
 $$ language plpgsql;
 
 
---cancels booking if exists and vehicle not in customer possession
+--Rania: Function cancels booking if exists and vehicle not in customer possession
 
 CREATE FUNCTION cancel_booking_c(booking_to_cancel INTEGER, c_customer_id INTEGER)
 RETURNS
