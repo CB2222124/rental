@@ -12,6 +12,11 @@ import java.util.InputMismatchException;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
 
+/**
+ * Employee command for recording a booked vehicle has been collected by the customer.
+ *
+ * @author Callan.
+ */
 public class BookingRecordPickupCommand implements Command {
 
     @Override
@@ -31,6 +36,14 @@ public class BookingRecordPickupCommand implements Command {
         }
     }
 
+    /**
+     * Updates the booking record to signify vehicle is in customers possession.
+     *
+     * @param bookingID  The booking to update.
+     * @param connection The Postgres connection to execute command on.
+     * @return Operation success (Fails if the customer already has the vehicle).
+     * @throws SQLException Database errors.
+     */
     public boolean recordPickup(int bookingID, Connection connection) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(
                 "UPDATE booking SET with_customer = 'true' WHERE booking_id = ?");
