@@ -2,6 +2,7 @@ package com.github.cb2222124.rental;
 
 import com.github.cb2222124.rental.commands.*;
 import com.github.cb2222124.rental.commands.booking.BookCommand;
+import com.github.cb2222124.rental.commands.booking.BookingRecordPickupCommand;
 import com.github.cb2222124.rental.commands.booking.ViewBookingsCommand;
 import com.github.cb2222124.rental.commands.location.ViewLocationsCommand;
 import com.github.cb2222124.rental.commands.vehicle.VehicleModifyCommandEmployee;
@@ -42,6 +43,7 @@ public class Application {
         commands.put("vehicle", new VehicleCommand());
         commands.put("modify", new VehicleModifyCommandEmployee());
         commands.put("book", new BookCommand());
+        commands.put("recordpickup", new BookingRecordPickupCommand());
         commands.put("bookings", new ViewBookingsCommand());
         commands.put("locations", new ViewLocationsCommand());
         commands.put("logout", new LogoutCommand());
