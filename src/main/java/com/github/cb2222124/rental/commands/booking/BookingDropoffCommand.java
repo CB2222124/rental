@@ -37,8 +37,8 @@ public class BookingDropoffCommand implements Command {
     }
 
     /**
-     * Removes the booking as it has been completed. The vehicles location will be changed to where
-     * it was dropped off.
+     * Removes the booking as it has been completed.
+     * TODO: The vehicles location should be changed to where it was dropped off.
      *
      * @param bookingID  The booking to update.
      * @param connection The Postgres connection to execute command on.
