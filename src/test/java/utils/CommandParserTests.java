@@ -1,11 +1,12 @@
 package utils;
 
-import static org.junit.Assert.assertEquals;
 
 import com.github.cb2222124.rental.utils.CommandParser;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CommandParserTests {
 

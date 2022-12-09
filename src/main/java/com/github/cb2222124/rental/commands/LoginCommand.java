@@ -57,7 +57,7 @@ public class LoginCommand implements Command {
         }
     }
 
-    private int login(String table, String username, String password, Connection connection)
+    public int login(String table, String username, String password, Connection connection)
             throws SQLException, NoSuchElementException {
         PreparedStatement statement = connection.prepareStatement(
                 "SELECT " + table + "_id FROM " + table + " WHERE username = ? AND password = ?");
