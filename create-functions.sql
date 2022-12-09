@@ -146,7 +146,6 @@ VALUES (
 END;
 $$ language plpgsql;
 
-<<<<<<< HEAD
 --Callan: Allows customer to swap the vehicle on a booking provided:
 --The old vehicle is not in the customers possession.
 --The new vehicle is available and at the same location.
@@ -164,10 +163,8 @@ WHERE
     AND EXISTS (SELECT * FROM vehicle v WHERE v.vehicle_id = input_vehicle_id AND v.location_id = b.pickup_loc);
 END;
 $$ language plpgsql;
-=======
 
 --Rania: Function cancels booking if exists and vehicle not in customer possession
-
 CREATE FUNCTION cancel_booking_c(booking_to_cancel INTEGER, c_customer_id INTEGER)
 RETURNS
 	VOID
@@ -189,4 +186,3 @@ ELSE RAISE 'Cannot delete booking, as does not exist or vehicle already in you p
 END IF;
 END;
 $$;
->>>>>>> main
