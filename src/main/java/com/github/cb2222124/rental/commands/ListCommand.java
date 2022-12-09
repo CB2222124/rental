@@ -17,12 +17,14 @@ public class ListCommand implements Command {
     public void execute(LinkedHashMap<String, String> args) {
         List<List<String>> table = new ArrayList<>();
         for (Map.Entry<String, Command> command : Application.commands.entrySet()) {
-            if(!command.getValue().isAvailable()) continue;
+            if (!command.getValue().isAvailable()) continue;
+            //Construct a table of commands with two columns, command name and command description.
             List<String> row = new ArrayList<>();
             row.add(command.getKey());
             row.add(command.getValue().getDescription());
             table.add(row);
         }
+        //Output this table.
         new OutputFormatter().printTable(table);
     }
 
