@@ -1,8 +1,8 @@
-package commands.login;
+package com.github.cb2222124.rental.commands.login;
 
 import com.github.cb2222124.rental.commands.LoginCommand;
 import com.github.cb2222124.rental.utils.Postgres;
-import commands.DatabaseTest;
+import com.github.cb2222124.rental.commands.CommandTest;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  *
  * @author Callan
  */
-public class LoginTest extends DatabaseTest {
+public class LoginTest extends CommandTest {
 
     @Test
     public void validLogin() throws SQLException {

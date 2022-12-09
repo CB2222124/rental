@@ -1,4 +1,4 @@
-package commands;
+package com.github.cb2222124.rental.commands;
 
 import com.github.cb2222124.rental.utils.Postgres;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,11 +7,11 @@ import java.sql.CallableStatement;
 import java.sql.SQLException;
 
 /**
- * Abstract database class that allows children to work on a clean database copy for unit tests.
+ * Abstract command test class that allows children to work on a clean database copy for unit tests.
  *
  * @author Callan
  */
-public abstract class DatabaseTest {
+public abstract class CommandTest {
     @BeforeEach
     public void resetDatabase() throws SQLException {
         try (Postgres postgres = new Postgres();
