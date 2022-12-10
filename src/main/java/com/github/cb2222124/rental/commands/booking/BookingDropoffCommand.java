@@ -24,7 +24,7 @@ public class BookingDropoffCommand implements Command {
         try (Postgres postgres = new Postgres()) {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Enter Booking ID: ");
-            if (recordPickup(scanner.nextInt(), postgres.getConnection())) {
+            if (recordDropoff(scanner.nextInt(), postgres.getConnection())) {
                 System.out.println("Customer drop off recorded, booking removed.");
             } else {
                 System.out.println("Invalid booking ID, verify booking exists and that the vehicle is in customers possession.");
@@ -45,7 +45,7 @@ public class BookingDropoffCommand implements Command {
      * @return Operation success (Fails if the customer doesn't have the vehicle).
      * @throws SQLException Database errors.
      */
-    public boolean recordPickup(int bookingID, Connection connection) throws SQLException {
+    public boolean recordDropoff(int bookingID, Connection connection) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(
                 "DELETE FROM booking WHERE booking_id = ? AND with_customer = 'true'");
         statement.setInt(1, bookingID);
