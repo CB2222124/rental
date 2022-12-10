@@ -36,7 +36,7 @@ public class ViewLocationsCommand implements Command {
      * @throws SQLException           Database errors.
      * @throws NoSuchElementException No locations were found.
      */
-    private void showLocations(Connection connection) throws SQLException, NoSuchElementException {
+    public void showLocations(Connection connection) throws SQLException, NoSuchElementException {
         CallableStatement statement = connection.prepareCall("{call getLocationsWithAddresses()}");
         ResultSet result = statement.executeQuery();
         if (!result.isBeforeFirst()) throw new NoSuchElementException();
