@@ -14,36 +14,36 @@ BEGIN
     DROP TABLE IF EXISTS employee;
 
     CREATE TABLE employee (
-        employee_id serial PRIMARY KEY,
-        username VARCHAR(25) UNIQUE,
-        password VARCHAR(25)
+        employee_id SERIAL PRIMARY KEY,
+        username VARCHAR(25) UNIQUE NOT NULL,
+        password VARCHAR(25) NOT NULL
     );
 
     CREATE TABLE city (
         city_code VARCHAR(2) PRIMARY KEY,
-        city VARCHAR(50)
+        city VARCHAR(50) NOT NULL
     );
 
     CREATE TABLE country (
         country_code VARCHAR(2) PRIMARY KEY,
-        country VARCHAR(50)
+        country VARCHAR(50) NOT NULL
     );
 
     CREATE TABLE address (
         address_id SERIAL PRIMARY KEY,
-        num VARCHAR(15),
-        street VARCHAR(50),
+        num VARCHAR(15) NOT NULL,
+        street VARCHAR(50) NOT NULL,
         city_code VARCHAR(2) REFERENCES city(city_code),
         country_code VARCHAR(2) REFERENCES country(country_code),
-        postcode VARCHAR(9)
+        postcode VARCHAR(9) NOT NULL
     );
 
     CREATE TABLE customer (
         customer_id SERIAL PRIMARY KEY,
-        firstname VARCHAR(50),
-        lastname VARCHAR(50),
-        username VARCHAR(35) UNIQUE,
-        password VARCHAR(25)
+        firstname VARCHAR(50) NOT NULL,
+        lastname VARCHAR(50) NOT NULL,
+        username VARCHAR(35) UNIQUE NOT NULL,
+        password VARCHAR(25) NOT NULL
         --address_id SERIAL REFERENCES address(address_id)
         --Note: Ideally the entry above would be used. However it is omitted here for the sake of satisfying a MVP. Revisit.
     );
@@ -55,11 +55,11 @@ BEGIN
 
     CREATE TABLE vehicle (
         vehicle_id SERIAL PRIMARY KEY,
-        reg VARCHAR(8),
+        reg VARCHAR(8) NOT NULL,
         make VARCHAR(30),
         model VARCHAR(30),
         location_id INTEGER REFERENCES location(location_id),
-        daily_fee numeric
+        daily_fee numeric NOT NULL
     );
 
     CREATE TABLE booking (
