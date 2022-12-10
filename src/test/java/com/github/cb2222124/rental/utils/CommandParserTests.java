@@ -1,4 +1,4 @@
-package utils;
+package com.github.cb2222124.rental.utils;
 
 
 import com.github.cb2222124.rental.utils.CommandParser;

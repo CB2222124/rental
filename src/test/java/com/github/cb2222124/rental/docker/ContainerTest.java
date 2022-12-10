@@ -1,4 +1,4 @@
-package docker;
+package com.github.cb2222124.rental.docker;
 
 //import org.apache.commons.lang3.SystemUtils;
 
