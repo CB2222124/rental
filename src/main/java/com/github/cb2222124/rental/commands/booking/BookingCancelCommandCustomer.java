@@ -31,7 +31,7 @@ public class BookingCancelCommandCustomer implements Command {
             System.out.print("Type 'confirm' to confirm cancellation, all other inputs will abort operation: ");
             String confirmation = scanner.nextLine();
             if (confirmation.equals("confirm")) {
-                cancelBookingAsCustomer(bookingIdToCancel, postgres.getConnection());
+                cancelBookingAsCustomer(bookingIdToCancel, Application.user.getID(), postgres.getConnection());
                 System.out.println("Operation success, booking cancelled.");
             } else {
                 System.out.println("Cancellation operation aborted by user.");
@@ -50,10 +50,10 @@ public class BookingCancelCommandCustomer implements Command {
      * @param connection The Postgres connection to execute command on.
      * @throws SQLException Database errors.
      */
-    public void cancelBookingAsCustomer(int bookingIdToCancel, Connection connection) throws SQLException {
+    public void cancelBookingAsCustomer(int bookingIdToCancel, int customer_id, Connection connection) throws SQLException {
         CallableStatement statement = connection.prepareCall("{call cancel_booking_c(?,?)}");
         statement.setInt(1, bookingIdToCancel);
-        statement.setInt(2, Application.user.getID());
+        statement.setInt(2, customer_id);
         statement.executeUpdate();
 
     }
