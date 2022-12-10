@@ -54,7 +54,7 @@ public class BookingChangeVehicleCommand implements Command {
      * @return Operation success.
      * @throws SQLException Database errors.
      */
-    private boolean changeVehicle(int bookingID, int vehicleID, int customerID, Connection connection) throws SQLException {
+    public boolean changeVehicle(int bookingID, int vehicleID, int customerID, Connection connection) throws SQLException {
         CallableStatement statement = connection.prepareCall("{call updateBookingVehicle(?,?,?)}");
         statement.setInt(1, bookingID);
         statement.setInt(2, vehicleID);
