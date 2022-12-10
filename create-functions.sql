@@ -149,8 +149,8 @@ $$ language plpgsql;
 --Callan: Allows customer to swap the vehicle on a booking provided:
 --The old vehicle is not in the customers possession.
 --The new vehicle is available and at the same location.
-CREATE FUNCTION updateBookingVehicle(input_booking_id integer, input_vehicle_id integer)
-RETURNS VOID
+CREATE FUNCTION updateBookingVehicle(input_booking_id integer, input_vehicle_id integer, input_customer_id integer)
+RETURNS INTEGER
 AS $$ BEGIN
 UPDATE
     booking b
@@ -158,9 +158,11 @@ SET
     vehicle_id = input_vehicle_id
 WHERE
     input_booking_id = booking_id
+    AND input_customer_id = customer_id
     AND with_customer = 'false'
     AND isVehicleAvailable(input_vehicle_id)
-    AND EXISTS (SELECT * FROM vehicle v WHERE v.vehicle_id = input_vehicle_id AND v.location_id = b.pickup_loc);
+    AND EXISTS (SELECT * FROM vehicle WHERE vehicle_id = input_vehicle_id AND location_id = b.pickup_loc);
+RETURN COUNT (*) FROM booking WHERE booking_id = input_booking_id AND vehicle_id = input_vehicle_id;
 END;
 $$ language plpgsql;
 
