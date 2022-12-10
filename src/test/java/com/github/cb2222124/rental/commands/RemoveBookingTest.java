@@ -1,19 +1,14 @@
 package com.github.cb2222124.rental.commands;
-
-import com.github.cb2222124.rental.commands.CommandTest;
-import com.github.cb2222124.rental.commands.LoginCommand;
-import com.github.cb2222124.rental.commands.booking.BookingCancelCommandCustomer;
 import com.github.cb2222124.rental.commands.booking.BookingDropoffCommand;
-import com.github.cb2222124.rental.commands.vehicle.VehicleRemoveCommand;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.NoSuchElementException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Rania tests remove booking function of BookingDropOffCommand 
+ */
 public class BookingDropoffCommandTest extends CommandTest {
 
     @Test
