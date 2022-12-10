@@ -59,7 +59,7 @@ BEGIN
         make VARCHAR(30),
         model VARCHAR(30),
         location_id INTEGER REFERENCES location(location_id),
-        daily_fee numeric NOT NULL
+        daily_fee numeric NOT NULL CHECK (daily_fee >= 0)
     );
 
     CREATE TABLE booking (
