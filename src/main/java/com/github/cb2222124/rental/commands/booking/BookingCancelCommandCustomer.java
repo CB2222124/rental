@@ -44,7 +44,11 @@ public class BookingCancelCommandCustomer implements Command {
     }
 
     /**
-     * Cancels the booking for a customer provided they do not have the vehicle yet.
+     * <p>
+     *     This function takes the customer's ID and the booking ID they want to cancel providing they have not picked
+     *     up the vehicle yet.
+     *     Customer_ID must match logged in customer (validated above, line 34)
+     *     Call made to SQL function - cancel_booking - that validates booking and vehicle possession
      *
      * @param bookingIdToCancel The booking to cancel.
      * @param connection The Postgres connection to execute command on.

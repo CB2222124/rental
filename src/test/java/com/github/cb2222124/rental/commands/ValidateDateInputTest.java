@@ -16,7 +16,6 @@ public class ValidateDateInputTest extends CommandTest{
     public void validDate() throws ParseException {
         BookingAddCommand addBooking = new BookingAddCommand();
         assertTrue(addBooking.validateBookingDates("2023-02-12", "2023-02-13"));
-
     }
 
     @Test
