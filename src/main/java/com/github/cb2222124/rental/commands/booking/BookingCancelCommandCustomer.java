@@ -5,9 +5,7 @@ import com.github.cb2222124.rental.models.Command;
 import com.github.cb2222124.rental.models.Role;
 import com.github.cb2222124.rental.utils.Postgres;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.InputMismatchException;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
@@ -27,14 +25,19 @@ public class BookingCancelCommandCustomer implements Command {
             System.out.print("Enter Booking ID: ");
             int bookingIdToCancel = scanner.nextInt();
             scanner.nextLine();
+            if(checkBookingBelongsToCustomer(bookingIdToCancel,Application.user.getID(), postgres.getConnection())) {
 
-            System.out.print("Type 'confirm' to confirm cancellation, all other inputs will abort operation: ");
-            String confirmation = scanner.nextLine();
-            if (confirmation.equals("confirm")) {
-                cancelBookingAsCustomer(bookingIdToCancel, Application.user.getID(), postgres.getConnection());
-                System.out.println("Operation success, booking cancelled.");
-            } else {
-                System.out.println("Cancellation operation aborted by user.");
+                System.out.print("Type 'confirm' to confirm cancellation, all other inputs will abort operation: ");
+                String confirmation = scanner.nextLine();
+                if (confirmation.equals("confirm")) {
+                    cancelBookingAsCustomer(bookingIdToCancel, Application.user.getID(), postgres.getConnection());
+                    System.out.println("Operation success, booking cancelled.");
+                } else {
+                    System.out.println("Cancellation operation aborted by user.");
+                }
+            }
+            else{
+                System.out.println("Sorry this booking does not exist. Exiting..");
             }
         } catch (SQLException e) {
             System.out.println("Database error (" + e.getMessage() + "), booking operation aborted.");
@@ -60,6 +63,18 @@ public class BookingCancelCommandCustomer implements Command {
         statement.setInt(2, customer_id);
         statement.executeUpdate();
 
+    }
+
+    public boolean checkBookingBelongsToCustomer(int booking_id, int customer_id, Connection connection) throws SQLException{
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM booking WHERE booking_id = ? AND customer_id = ?");
+        statement.setInt(1,booking_id);
+        statement.setInt(2,customer_id);
+
+        ResultSet results = statement.executeQuery();
+        if(results.isBeforeFirst()){
+            return true;
+        }
+        return false;
     }
 
     @Override
