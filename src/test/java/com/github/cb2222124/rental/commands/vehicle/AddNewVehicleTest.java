@@ -44,7 +44,7 @@ public class AddNewVehicleTest extends CommandTest {
     }
 
     @Test
-    public void throwsOnNoReg() throws SQLException {
+    public void throwsOnNoReg() {
         assertThrows(PSQLException.class, () -> {
             VehicleNewCommand vehicleNewCommand = new VehicleNewCommand();
             vehicleNewCommand.addNewVehicle(
