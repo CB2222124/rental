@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @author Rania tests remove booking function of BookingDropOffCommand 
+ * @author Rania tests remove booking function of BookingDropOffCommand
  */
-public class BookingDropoffCommandTest extends CommandTest {
+public class RemoveBookingTest extends CommandTest {
 
     @Test
     public void removeBookingValid() throws SQLException {
