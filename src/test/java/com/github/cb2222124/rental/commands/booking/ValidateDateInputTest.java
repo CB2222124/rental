@@ -1,11 +1,12 @@
-package com.github.cb2222124.rental.commands;
+package com.github.cb2222124.rental.commands.booking;
 
+import com.github.cb2222124.rental.commands.CommandTest;
 import com.github.cb2222124.rental.commands.booking.BookingAddCommand;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.text.ParseException;
 
-public class ValidateDateInputTest extends CommandTest{
+public class ValidateDateInputTest extends CommandTest {
 
     /**
      * Tests date input when trying to book a vehicle

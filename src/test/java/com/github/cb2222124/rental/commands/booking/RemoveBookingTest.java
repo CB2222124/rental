@@ -1,4 +1,5 @@
-package com.github.cb2222124.rental.commands;
+package com.github.cb2222124.rental.commands.booking;
+import com.github.cb2222124.rental.commands.CommandTest;
 import com.github.cb2222124.rental.commands.booking.BookingDropoffCommand;
 import org.junit.jupiter.api.Test;
 
