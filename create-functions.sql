@@ -37,7 +37,7 @@ WHERE
 END;
 $$ language plpgsql;
 
---Function allows employees to update a vehicle reg only if it exists. Rania.
+--Rania: Function allows employees to update a vehicle reg only if it exists.
 CREATE FUNCTION updateReg(newReg VARCHAR, vehicle_idToLook INTEGER)
 RETURNS
 		VOID
