@@ -209,3 +209,37 @@ ELSE RAISE 'Cannot delete booking, as does not exist';
 END IF;
 END;
 $$;
+
+--Liam: Audit function, trigger fires on UPDATE, DELETE or INSERTIONS into booking table.
+    --Integration for later release
+CREATE FUNCTION booking_audit_function()
+    RETURNS TRIGGER AS
+$$
+BEGIN
+IF (tg_op = 'DELETE')
+THEN
+    INSERT INTO booking_audit
+    values ('D', NOW(), old.booking_id, old.customer_id, old.vehicle_id, old.pickup_loc, old.dropoff_loc,
+            old.with_customer, old.datefrom, old.dateto);
+ELSIF (tg_op = 'UPDATE')
+THEN
+    INSERT INTO booking_audit
+    values('U', NOW(), new.booking_id, new.customer_id, new.vehicle_id, new.pickup_loc, new.dropoff_loc,
+            new.with_customer, new.datefrom, new.dateto);
+ELSIF (tg_op = 'INSERT')
+THEN
+    INSERT INTO booking_audit
+    VALUES ('I', NOW(), new.booking_id, new.customer_id, new.vehicle_id, new.pickup_loc, new.dropoff_loc,
+            new.with_customer, new.datefrom, new.dateto);
+END IF;
+RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER audit ON booking
+
+CREATE TRIGGER audit
+    AFTER INSERT OR UPDATE OR DELETE
+            ON booking
+            FOR EACH ROW
+            EXECUTE FUNCTION booking_audit_function();

@@ -12,6 +12,7 @@ BEGIN
     DROP TABLE IF EXISTS country;
     DROP TABLE IF EXISTS city;
     DROP TABLE IF EXISTS employee;
+    DROP TABLE IF EXISTS booking_audit;
 
     CREATE TABLE employee (
         employee_id SERIAL PRIMARY KEY,
@@ -72,6 +73,20 @@ BEGIN
         dateto date,
         with_customer BOOLEAN
     );
+
+    CREATE TABLE booking_audit (
+        operation VARCHAR(1),
+        changed_on TIMESTAMP NOT NULL,
+        booking_id INTEGER,
+        customer_id INTEGER,
+        vehicle_id INTEGER,
+        pickup_loc INTEGER,
+        dropoff_loc INTEGER,
+        with_customer BOOLEAN,
+        datefrom DATE,
+        dateto DATE
+    );
+
 END;
 $$ language plpgsql;
 
