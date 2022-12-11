@@ -1,4 +1,4 @@
-package com.github.cb2222124.rental.commands.CancelBookingCusTest;
+package com.github.cb2222124.rental.commands.booking;
 import com.github.cb2222124.rental.commands.booking.BookingCancelCommandCustomer;
 import com.github.cb2222124.rental.commands.CommandTest;
 import org.junit.jupiter.api.Test;

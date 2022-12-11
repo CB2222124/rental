@@ -125,6 +125,9 @@ $$ language plpgsql;
 CREATE FUNCTION addBooking(input_customer_id integer, input_vehicle_id integer, input_dropoff integer, input_date_from date, input_date_to date)
 RETURNS VOID
 AS $$ BEGIN
+IF NOT isVehicleAvailable(input_vehicle_id) THEN
+    RAISE 'Vehicle is not available for booking';
+END IF;
 INSERT INTO booking (
     customer_id,
     vehicle_id,
