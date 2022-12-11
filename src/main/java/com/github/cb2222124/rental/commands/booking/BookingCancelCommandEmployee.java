@@ -24,9 +24,13 @@ public class BookingCancelCommandEmployee implements Command {
     public void execute(LinkedHashMap<String, String> args) {
         try (Postgres postgres = new Postgres()) {
             Scanner scanner = new Scanner(System.in);
+
             System.out.print("Enter Booking ID: ");
             int bookingIDCancel = scanner.nextInt();
-            confirmCancellation(bookingIDCancel, postgres.getConnection());
+            scanner.nextLine();
+            System.out.print("Type 'confirm' to confirm cancellation, all other inputs will abort operation: ");
+            String bookingCancelConfirm = scanner.nextLine();
+            confirmCancellation(bookingIDCancel, bookingCancelConfirm, postgres.getConnection());
         } catch (SQLException e) {
             System.out.println("Database error (" + e.getMessage() + "), operation aborted.");
         } catch (InputMismatchException e) {
@@ -41,10 +45,8 @@ public class BookingCancelCommandEmployee implements Command {
      * @param connection The Postgres connection to execute command on.
      * @throws SQLException Database errors.
      */
-    public void confirmCancellation(int bookingID, Connection connection) throws SQLException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Type 'confirm' to confirm cancellation, all other inputs will abort operation: ");
-        String confirmation = scanner.nextLine();
+    public void confirmCancellation(int bookingID, String inputConfirmation, Connection connection) throws SQLException {
+        String confirmation = inputConfirmation;
         if (confirmation.equalsIgnoreCase("confirm")) {
             CallableStatement statement = connection.prepareCall("{call cancel_booking_e(?)}");
             statement.setInt(1, bookingID);
