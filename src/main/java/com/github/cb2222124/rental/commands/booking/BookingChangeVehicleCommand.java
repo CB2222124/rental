@@ -8,6 +8,7 @@ import com.github.cb2222124.rental.utils.Postgres;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
 
@@ -27,8 +28,7 @@ public class BookingChangeVehicleCommand implements Command {
             scanner.nextLine();
             System.out.print("Enter New Vehicle ID: ");
             int vehicleID = scanner.nextInt();
-            scanner.nextInt();
-            if (changeVehicle(bookingID, vehicleID, postgres.getConnection())) {
+            if (changeVehicle(bookingID, vehicleID, Application.user.getID(), postgres.getConnection())) {
                 System.out.println("Vehicle for booking changed successfully.");
             } else {
                 System.out.println("""
@@ -46,7 +46,7 @@ public class BookingChangeVehicleCommand implements Command {
      * Changes the vehicle for a booking provided:
      * The old vehicle is not in the customers' possession.
      * The new vehicle is available and at the same location.
-     * TODO: The booking belongs to the active user.
+     * The booking belongs to the active user.
      *
      * @param bookingID  The booking ID.
      * @param vehicleID  The new vehicle.
@@ -54,11 +54,14 @@ public class BookingChangeVehicleCommand implements Command {
      * @return Operation success.
      * @throws SQLException Database errors.
      */
-    private boolean changeVehicle(int bookingID, int vehicleID, Connection connection) throws SQLException {
-        CallableStatement statement = connection.prepareCall("{call updateBookingVehicle(?,?)}");
+    private boolean changeVehicle(int bookingID, int vehicleID, int customerID, Connection connection) throws SQLException {
+        CallableStatement statement = connection.prepareCall("{call updateBookingVehicle(?,?,?)}");
         statement.setInt(1, bookingID);
         statement.setInt(2, vehicleID);
-        return statement.executeUpdate() != 0;
+        statement.setInt(3, customerID);
+        statement.registerOutParameter(1, Types.INTEGER);
+        statement.execute();
+        return statement.getInt(1) != 0;
     }
 
     @Override

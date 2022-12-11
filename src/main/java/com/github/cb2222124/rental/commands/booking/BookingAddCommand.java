@@ -109,7 +109,7 @@ public class BookingAddCommand implements Command {
      * @return True if pickup isn't before today and dropoff isn't before pickup. False otherwise.
      * @throws ParseException A string argument could not be converted to a date (Invalid input).
      */
-    private boolean validateBookingDates(String pickup, String dropoff) throws ParseException {
+    public boolean validateBookingDates(String pickup, String dropoff) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setLenient(false);
         Date pickupDate = sdf.parse(pickup);
