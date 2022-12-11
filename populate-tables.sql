@@ -43,7 +43,7 @@ BEGIN
 
     insert into vehicle (reg, make, model, location_id, daily_fee) values ('GH26 VVC', 'Honda', 'Ridgeline', 1, 124.11);
     insert into vehicle (reg, make, model, location_id, daily_fee) values ('RR02 CSE', 'GMC', 'Acadia', 1, 99.53);
-    insert into vehicle (reg, make, model, location_id, daily_fee) values ('HX51 OLP', 'Ford', 'Mustang', 1, 130.58);
+    insert into vehicle (reg, make, model, location_id, daily_fee) values ('HX51 OLP', 'Ford', 'Mustang', 3, 130.58);
     insert into vehicle (reg, make, model, location_id, daily_fee) values ('VC88 HDV', 'Bentley', 'Continental GT', 2, 139.72);
     insert into vehicle (reg, make, model, location_id, daily_fee) values ('HR91 JAO', 'Chevrolet', 'Silverado', 3, 186.17);
     insert into vehicle (reg, make, model, location_id, daily_fee) values ('OI80 AXE', 'Jeep', 'Grand Cherokee', 2, 125.9);
